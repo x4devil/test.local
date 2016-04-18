@@ -3,11 +3,11 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
-	<link rel="stylesheet" type="text/css" href="css/style.css"/>
+	<link rel="stylesheet" type="text/css" href="style.css"/>
 	<link rel="stylesheet" type="text/css" href="css/font-awesome.min.css"/>
 </head>
 <body>
-	<div id="container">
+	<div id="container" class="clearfix">
 		<header>
 		    <div class="search">
 				<input type="text" class="query" placeholder="Search...">
@@ -32,7 +32,11 @@
 				<div class="header">
 					Случайная фотография
 				</div>
-				<img src="1.jpg" alt="">
+				<div class="wrapper">
+					<div class="cell">
+						<img src="1.jpg" alt="">
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="content">
@@ -214,6 +218,59 @@
 					<div class="button">
 						<input type="submit" value="Применить">
 					</div>
+				</div>
+			</div>
+			<div class="search-block clearfix">
+				<div class="search-panel">
+					<div class="heading">
+						Moscow, Russia
+					</div>
+					<div class="search-city">
+						<input type="text" placeholder="Search...">
+					</div>
+					<div class="search-city">
+						Kiev, Ukraine
+					</div>
+					<div class="search-city">
+						New York, USA
+					</div>
+					<div class="search-city">
+						Tokyo, Japan
+					</div>
+					<div class="search-city active">
+						Moscow, Russia
+					</div>
+					<div class="search-city">
+						Beijing, China
+					</div>
+				</div>
+				<div class="result-panel">
+					<div class="panel clearfix">
+						<div class="header">
+							Название усадьбы
+						</div>
+						<img class="resust-img" src="1.jpg">
+						<div class="result-information">
+							Основная информация:
+							<p class="info">Базовая цена за койко место：</p>
+							<p class="info">Адразовая цена за койко ме азовая цена за койко ме азовая цена за койко ме азовая цена за койко меазовая цена за койко меазовая цена за койко место： азовая цена за койко меес：</p>
+						</div>
+						<a href="#">Подробнее...</a>	
+					</div>
+					<div class="panel">
+						<div class="header">
+							Название усадьбы
+						</div>
+					</div>
+				</div>
+				<div class="pagination">
+					<p class="active">1</p>
+					<p>1</p>
+					<p>1</p>
+					<p>1</p>
+					<p>1</p>
+					<p>1</p>
+					<p>1</p>
 				</div>
 			</div>
 		</div>
