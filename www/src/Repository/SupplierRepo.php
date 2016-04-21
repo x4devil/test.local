@@ -12,24 +12,22 @@ class SupplierRepo {
 
 	public function createObject($data) {
 		$supplier = new Entity\Supplier();
-		$supplier->setId('id');
-		$supplier->setFio('fio');
-		$supplier->setPhone('phone');
-		$supplier->setEmail('email');
-		$supplier->setPassword('password');
+		$supplier->setId($data['id']);
+		$supplier->setFio($data['fio']);
+		$supplier->setPhone($data['phone']);
+		$supplier->setEmail($data['email']);
+		$supplier->setPassword($data['password']);
 
 		return $supplier;
 	}
 
 	public function findByEmailAndPasssword($email, $password) {
-		$queryBuilder = $this->conn->createQueryBuilder();
 		$data = $this->conn->fetchAssoc(
 			'select s.* 
 				from supplier s 
 				where s.email like ?
-					and s.password = ?', 
+					and s.password like ?', 
 			array((string)$email, (string)$password));
-
 		if ($data['id'] == NULL) {
 			return NULL;
 		}

@@ -1,8 +1,8 @@
 <?php
 
-categoryspace Selotur\Entity;
+namespace Selotur\Entity;
 
-class TypeOfTour {
+class Type {
 	protected $id;
 	protected $category;
 	protected $price;

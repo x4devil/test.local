@@ -1,0 +1,16 @@
+{% extends "adminbase.twig" %}
+
+{% block title %}
+    Сельский туризм|Добавить домик
+{% endblock %}
+
+{% block content %}
+	<form method="POST">
+		<input type="hidden" name="_method" value="PUT"/>
+		<span>Название</span><input type="text" name="name" required maxlength="50">
+		<span>Базовая стоимость койко-места без услуг</span><input type="text" name="price" required pattern="\d+(.\d{2})?">
+		<span>Количество мест</span><input type="text" name="place" required pattern="\d{2}">
+		<span>Описание</span><textarea name="description" required maxlength="500"></textarea>
+		<button type="submit">Создать домик</button>
+	</form>
+{% endblock %}

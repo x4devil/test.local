@@ -1,0 +1,31 @@
+{% extends "adminbase.twig" %}
+
+{% block title %}
+    Сельский туризм|Поставщик
+{% endblock %}
+
+{% block content %}
+    <a href="/house">Добавить домик</a>
+    <a href="/subsupplier">Список субподрядчиков</a>
+    <a href="/request">Список одобренных заявок</a>
+    <a href="/service">Предоставляемые услуги</a>
+
+    <div>
+    	<h3>Количество свободных мест в домике</h3>
+    	<form>
+    		{% for house in houses %}
+    			<span>{{ house.getName() }}</span> 
+    			<select name="{{ house.getId() }}">
+	    			{% for place in 0..house.getPlace()-1 %}
+		    			{% if loop.index == house.getEmptyPlace() %}
+		    				<option value="{{ loop.index }}" selected="true" >{{ loop.index }}</option>
+		    			{% else %}
+		    				<option value="{{ loop.index }}">{{ loop.index }}</option>
+		    			{% endif %}
+					{% endfor %}
+				</select>
+                из {{ house.getPlace() }}
+    		{% endfor %}
+    	</form>
+    </div>
+{% endblock %}

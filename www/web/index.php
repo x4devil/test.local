@@ -41,12 +41,28 @@ $app->register(new Silex\Provider\MonologServiceProvider(), array(
 ));
 
 //Repositories
-$repos = array();
 $app['supplier_repo'] = new Selotur\Repository\SupplierRepo($app['db']);
+$app['homestead_repo'] = new Selotur\Repository\HomesteadRepo($app['db']);
+$app['house_repo'] = new Selotur\Repository\HouseRepo($app['db'], $app);
+$app['region_repo'] = new Selotur\Repository\RegionRepo($app['db']);
+$app['live_type_repo'] = new Selotur\Repository\LiveTypeRepo($app['db']);
+$app['photo_repo'] = new Selotur\Repository\PhotoRepo($app['db']);
+
+$checkPermission = function () use ($app) {
+	$auth = $app['session']->get('auth');
+	$supplier = $app['session']->get('supplier');
+
+	if (!$auth) {
+		return $app->redirect('/');
+	}
+
+	if ($supplier == NULL) {
+		return $app->redirect('/');
+	}
+};
 
 $app->get('/', function (Application $app) {
-	$templateData = array();
-	return $app['twig']->render('index.twig', $templateData);
+	return $app['twig']->render('index.twig');
 });
 
 $app->put('/login', function (Request $request) use ($app) {
@@ -54,19 +70,39 @@ $app->put('/login', function (Request $request) use ($app) {
 	$password = $request->get('password');
 
 	$supplier = $app['supplier_repo']->findByEmailAndPasssword($email, $password);
-	if ($supplier == NULL) {
+	$homestead = $app['homestead_repo']->findBySupplier($supplier->getId());
+	if ($supplier == NULL || $homestead == NULL) {
 		return $app->redirect('/');
 	}
-	$app['session']->set('isAut', true);
-	$app['session']->set('suplier', $suplier);
+	$app['session']->set('auth', true);
+	$app['session']->set('supplier', $supplier->getId());
+	$app['session']->set('homestead', $homestead->getId());
 	return $app->redirect('/homestead');
 });
 
-$app->get('/homestead', function (Application $app) {
-	$templateData = array();
-	return $app['twig']->render('homestead.twig', $templateData);
+$app->get('/logout', function(Application $app) {
+	return $app->redirect('/');
 });
 
+$app->get('/homestead', function (Application $app) {
+	$tempalteData['houses'] = $app['house_repo']->findByHomestead($app['session']->get('homestead'));
+	return $app['twig']->render('homestead.twig', $tempalteData);
+})->before($checkPermission);
+
+
+$app->get('/house', function (Application $app) {
+	return $app['twig']->render('house.twig');
+})->before($checkPermission);
+
+$app->put('/house', function (Request $request, Application $app) {
+	$data = $request->request->all();
+	$data['id_homestead'] = $app['session']->get('homestead');
+	$data['empty_place'] = $request->get('place');
+
+	$app['house_repo']->insertHouse(
+		$app['house_repo']->createArray($data));
+	return $app->redirect('/homestead');
+})->before($checkPermission);
 
 $app->error(function(\Exception $e, $code) {
     if (DEBUG_MODE) {

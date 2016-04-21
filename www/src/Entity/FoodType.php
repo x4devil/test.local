@@ -1,11 +1,8 @@
 <?php
 
-namespace Selotur\Entity;
-
-class PlaceOfRest {
+class FoodType {
 	protected $id;
 	protected $name;
-	protected $description;
 
 	public function getId() {
 		return $this->id;
@@ -21,13 +18,5 @@ class PlaceOfRest {
 
 	public function setName($name) {
 		$this->name = $name;
-	}
-
-	public function getDescription() {
-		return $this->description;
-	}
-
-	public function setDescription($description) {
-		$this->description = $description;
 	}
 }
