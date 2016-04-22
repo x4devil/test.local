@@ -10,6 +10,50 @@ class HomesteadRepo {
 		$this->conn = $conn;
 	}
 
+	public function createSupplier($email, $phone, $fio, $password) {
+		$data['email'] = $email;
+		$data['phone'] = $phone;
+		$data['fio'] = $fio;
+		$data['password'] = $password;
+		$this->conn->insert('supplier', $data);
+
+		$idSupplier = $this->conn->fetchColumn(
+			'select max(s.id) from supplier s');
+
+		$data = array();
+		$data['id_supplier'] = $idSupplier;
+		$this->conn->insert('homestead', $data);
+
+		$idHomestead = $this->conn->fetchColumn(
+			'select max(h.id) from homestead h');
+
+		$tourismTypes = $this->conn->fetchAll(
+			'select tt.id from tourism_type tt');
+
+		foreach ($tourismTypes as $idTourismType) {
+			$this->conn->insert('homestead_tourism_type', 
+				array(
+					'id_homestead' => $idHomestead,
+					'id_tourism_type' => $idTourismType['id'],
+					'active' => false,
+					'price' => 0
+					));
+		}
+
+		$services = $this->conn->fetchAll(
+			'select s.id from service s');
+
+		foreach ($services as $idService) {
+			$this->conn->insert('homestead_service', 
+				array(
+					'id_homestead' => $idHomestead,
+					'id_service' => $idService['id'],
+					'active' => false,
+					'price' => 0
+					));
+		}
+	}
+
 	public function createObject($data) {
 		$homestead = new Entity\Homestead();
 		$homestead->setId($data['id']);

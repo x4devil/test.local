@@ -70,8 +70,11 @@ $app->put('/login', function (Request $request) use ($app) {
 	$password = $request->get('password');
 
 	$supplier = $app['supplier_repo']->findByEmailAndPasssword($email, $password);
+	if ($supplier == NULL) {
+		return $app->redirect('/');
+	}
 	$homestead = $app['homestead_repo']->findBySupplier($supplier->getId());
-	if ($supplier == NULL || $homestead == NULL) {
+	if ($homestead == NULL) {
 		return $app->redirect('/');
 	}
 	$app['session']->set('auth', true);
@@ -82,6 +85,36 @@ $app->put('/login', function (Request $request) use ($app) {
 
 $app->get('/logout', function(Application $app) {
 	return $app->redirect('/');
+});
+
+$app->get('/registration', function (Application $app) {
+	return $app['twig']->render('registration.twig');
+});
+
+$app->put('/registration', function (Request $request, Application $app) {
+	if ($app['supplier_repo']->findByEmail($request->get('email'))) {
+		return $app->redirect('/registration');
+	}
+
+	$app['homestead_repo']->createSupplier(
+		$request->get('email'), 
+		$request->get('phone'), 
+		$request->get('fio'), 
+		$request->get('password'));
+
+	$supplier = $app['supplier_repo']->findByEmailAndPasssword($request->get('email'), $request->get('password'));
+	if ($supplier == NULL) {
+		return $app->redirect('/');
+	}
+	$homestead = $app['homestead_repo']->findBySupplier($supplier->getId());
+	if ($homestead == NULL) {
+		return $app->redirect('/');
+	}
+
+	$app['session']->set('auth', true);
+	$app['session']->set('supplier', $supplier->getId());
+	$app['session']->set('homestead', $homestead->getId());
+	return $app->redirect('/homestead');
 });
 
 $app->get('/homestead', function (Application $app) {
@@ -156,6 +189,7 @@ $app->delete('/house/edit/{id}', function (Application $app, $id) {
 
 $app->get('/service', function (Application $app) {
 
+	return $app['twig']->render('service.twig', $tempalteData);
 });
 
 $app->error(function(\Exception $e, $code) {

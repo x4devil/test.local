@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}{% endblock %}</title>
+    <title>Сельский туризм|Регистрация</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -12,15 +12,14 @@
     <![endif]-->
     </head>
     <body>
-        {% block content %}
-        {% endblock %}
-        <form method="POST" action="/login">
-            <input type="hidden" name="_method" value="PUT"/>
-            <input name="email" type="email">
-            <input name="password" type="password">
-            <button type="submit">Войти</button>
-        </form>
-        <a href="/registration">Регистрация</a>
+        <form method="POST">
+			<input type="hidden" name="_method" value="PUT"/>
+			<span>ФИО</span><input name="fio" type="text" required>
+			<span>E-mail</span><input name="email" type="email" required>
+			<span>Телефон</span><input name="phone" type="text" required>
+			<span>Пароль</span><input name="password" type="password" required>
+			<button type="submit">Регистрация</button>
+		</form>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
     </body>

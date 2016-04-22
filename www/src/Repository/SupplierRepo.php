@@ -21,6 +21,19 @@ class SupplierRepo {
 		return $supplier;
 	}
 
+	public function findByEmail($email) {
+		$data = $this->conn->fetchAll(
+			'select s.* 
+			from supplier s 
+			where s.email like ?',
+			array($email));
+		if (count($data) > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public function findByEmailAndPasssword($email, $password) {
 		$data = $this->conn->fetchAssoc(
 			'select s.* 
