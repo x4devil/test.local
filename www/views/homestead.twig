@@ -12,21 +12,22 @@
 
     <div>
     	<h3>Количество свободных мест в домике</h3>
-    	<form>
+    	<form method="POST">
+            <input type="hidden" name="_method" value="PUT"/>
     		{% for house in houses %}
     			<span><a href="/house/edit/{{house.getId()}}">{{ house.getName() }}</a></span> 
     			<select name="{{ house.getId() }}">
-	    			{% for place in 0..house.getPlace()-1 %}
+	    			{% for place in 0..house.getPlace() %}
 		    			{% if loop.index == house.getEmptyPlace() %}
-		    				<option value="{{ loop.index }}" selected="true" >{{ loop.index }}</option>
+		    				<option value="{{ loop.index }}" selected="true" >{{ place }}</option>
 		    			{% else %}
-		    				<option value="{{ loop.index }}">{{ loop.index }}</option>
+		    				<option value="{{ loop.index }}">{{ place }}</option>
 		    			{% endif %}
 					{% endfor %}
 				</select>
                 из {{ house.getPlace() }}
     		{% endfor %}
-            <button>Сохранить</button>
+            <button type="submit">Сохранить</button>
     	</form>
     </div>
 {% endblock %}

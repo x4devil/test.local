@@ -52,6 +52,12 @@ class HouseRepo {
 		$this->conn->delete('house', array('id'=>$id));
 	}
 
+	public function changeEmptyPlace($id, $emptyPlace) {
+		$this->conn->update('house', 
+			array('empty_place' => $emptyPlace), 
+			array('id' => $id));
+	} 
+
 	public function findByHomestead($homestead) {
 		$data = $this->conn->fetchAll('
 			select h.* 

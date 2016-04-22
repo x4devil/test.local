@@ -89,6 +89,14 @@ $app->get('/homestead', function (Application $app) {
 	return $app['twig']->render('homestead.twig', $tempalteData);
 })->before($checkPermission);
 
+$app->put('/homestead', function (Application $app, Request $request) {
+	$data = $request->request->all();
+	foreach ($data as $id => $val) {
+		$app['house_repo']->changeEmptyPlace($id, $val);
+	}
+	return $app->redirect('/homestead');
+});
+
 
 $app->get('/house', function (Application $app) {
 	$liveTypes = $app['live_type_repo']->findAll();
