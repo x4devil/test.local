@@ -3,7 +3,7 @@
 namespace Selotur\Repository;
 use \Selotur\Entity as Entity;
 
-class HomesteadRepo {
+class ServiceRepo {
 	protected $conn;
 
 	public function __construct($conn) {
@@ -27,7 +27,7 @@ class HomesteadRepo {
 			'select s.* 
 			from homestead_service s
 			where s.id_homestead = ?',
-			array($homestead);
+			array($homestead));
 
 		$services = array();
 		foreach ($data as $service) {

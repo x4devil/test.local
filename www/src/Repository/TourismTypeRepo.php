@@ -27,7 +27,7 @@ class TourismTypeRepo {
 			'select tt.* 
 			from homestead_tourism_type tt
 			where tt.id_homestead = ?',
-			array($homestead);
+			array($homestead));
 
 		$types = array();
 		foreach ($data as $type) {
