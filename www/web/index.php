@@ -91,7 +91,9 @@ $app->get('/homestead', function (Application $app) {
 
 
 $app->get('/house', function (Application $app) {
-	return $app['twig']->render('house.twig');
+	$liveTypes = $app['live_type_repo']->findAll();
+	return $app['twig']->render('house.twig', 
+		array('liveTypes' => $liveTypes));
 })->before($checkPermission);
 
 $app->put('/house', function (Request $request, Application $app) {
@@ -103,6 +105,37 @@ $app->put('/house', function (Request $request, Application $app) {
 		$app['house_repo']->createArray($data));
 	return $app->redirect('/homestead');
 })->before($checkPermission);
+
+$app->get('/house/edit/{id}', function (Application $app, $id) {
+	$house = $app['house_repo']->findById($id);
+	$liveTypes = $app['live_type_repo']->findAll();
+
+	if (!isset($house)
+		|| $house->getHomestead() != $app['session']->get('homestead')) {
+		return $app->redirect('/homestead');
+	}
+
+	$tempalteData['house'] = $house;
+	$tempalteData['liveTypes'] = $liveTypes;
+
+	return $app['twig']->render('house.twig', $tempalteData);
+})->before($checkPermission);
+
+$app->put('/house/edit/{id}', function (Request $request, Application $app, $id) {
+	$data = $request->request->all();
+	$data['id_homestead'] = $app['session']->get('homestead');
+	$data['empty_place'] = $request->get('place');
+
+	$app['house_repo']->updateHouse(
+		$app['house_repo']->createArray($data),
+		$id);
+	return $app->redirect('/homestead');
+})->before($checkPermission);
+
+$app->delete('/house/edit/{id}', function (Application $app, $id) {
+	$app['house_repo']->deleteHouse($id);
+	return $app->redirect('/homestead');
+});
 
 $app->error(function(\Exception $e, $code) {
     if (DEBUG_MODE) {

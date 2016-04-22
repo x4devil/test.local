@@ -23,14 +23,13 @@ class HouseRepo {
 		$house->setEmptyPlace($data['empty_place']);
 
 		$liveType = $this->app['live_type_repo']->findById($data['id_live_type']);
-		//$house->setLiveType($liveType);
+		$house->setLiveType($liveType);
 		$photos = $this->app['photo_repo']->findByHouse($data['id']);
 		$house->setPhotos($photos);
 		return $house;
 	}
 
 	public function createArray($data) {
-		//$house['id'] = $data['id'];
 		$house['price'] = $data['price'];
 		$house['place'] = $data['place'];
 		$house['id_homestead'] = $data['id_homestead'];
@@ -43,6 +42,14 @@ class HouseRepo {
 
 	public function insertHouse($data) {
 		$this->conn->insert('house', $data);
+	}
+
+	public function updateHouse($data, $id) {
+		$this->conn->update('house', $data, array('id'=>$id));
+	}
+
+	public function deleteHouse($id) {
+		$this->conn->delete('house', array('id'=>$id));
 	}
 
 	public function findByHomestead($homestead) {
@@ -60,6 +67,19 @@ class HouseRepo {
 			$houses[] = $this->createObject($house);
 		}
 		return $houses;
+	}
+
+	public function findById($id) {
+		$data = $this->conn->fetchAssoc('
+			select h.* 
+			from house h 
+			where h.id = ?',
+			array($id));
+
+		if ($data['id'] == NULL) {
+			return NULL;
+		}
+		return $this->createObject($data);
 	}
 	
 }

@@ -7,10 +7,32 @@
 {% block content %}
 	<form method="POST">
 		<input type="hidden" name="_method" value="PUT"/>
-		<span>Название</span><input type="text" name="name" required maxlength="50">
-		<span>Базовая стоимость койко-места без услуг</span><input type="text" name="price" required pattern="\d+(.\d{2})?">
-		<span>Количество мест</span><input type="text" name="place" required pattern="\d{2}">
-		<span>Описание</span><textarea name="description" required maxlength="500"></textarea>
-		<button type="submit">Создать домик</button>
+		<span>Название</span><input type="text" name="name" required maxlength="50" value={{house.getName()}}>
+		<span>Базовая стоимость койко-места без услуг</span><input type="text" name="price" required pattern="\d+(.\d{2})?" value="{{house.getPrice()}}">
+		<span>Количество мест</span><input type="text" name="place" required pattern="\d{2}" value="{{house.getPlace()}}">
+		<span>Описание</span><textarea name="description" required maxlength="500">{{house.getDescription()}}</textarea>
+		<span>Тип проживания</span>
+		<select name="id_live_type">
+			{% for liveType in liveTypes %}
+				{% if house.getLiveType().getId() == liveType.getId() %}
+					<option value="{{liveType.getId()}}" selected>{{liveType.getName()}}</option>
+				{% else %}
+					<option value="{{liveType.getId()}}">{{liveType.getName()}}</option>
+				{% endif %}
+			{% endfor %}
+		</select>
+		{% if house == NULLL %}
+			<button type="submit">Создать домик</button>
+		{% else %}
+			<button type="submit">Сохранить</button>
+		{% endif %}
 	</form>
+	{% if house != NULLL %}
+	<form method="post">
+		<button>Удалить</button>
+    	<input type="hidden" id="_method" name="_method" value="DELETE" />
+	</form>
+	{% endif %}
+	
+	<a href="/homestead"><button>Назад</button></a>
 {% endblock %}

@@ -21,7 +21,7 @@ class LiveTypeRepo {
 		$data = $this->conn->fetchAll('
 			select lt.* 
 			from live_type lt 
-			order by ft.name');
+			order by lt.name');
 
 		if (count($data) <= 0) {
 			return NULL;

@@ -14,7 +14,7 @@
     	<h3>Количество свободных мест в домике</h3>
     	<form>
     		{% for house in houses %}
-    			<span>{{ house.getName() }}</span> 
+    			<span><a href="/house/edit/{{house.getId()}}">{{ house.getName() }}</a></span> 
     			<select name="{{ house.getId() }}">
 	    			{% for place in 0..house.getPlace()-1 %}
 		    			{% if loop.index == house.getEmptyPlace() %}
@@ -26,6 +26,7 @@
 				</select>
                 из {{ house.getPlace() }}
     		{% endfor %}
+            <button>Сохранить</button>
     	</form>
     </div>
 {% endblock %}
