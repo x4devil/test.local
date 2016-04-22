@@ -50,6 +50,28 @@ $app['photo_repo'] = new Selotur\Repository\PhotoRepo($app['db']);
 $app['tourism_type_repo'] = new Selotur\Repository\TourismTypeRepo($app['db']);
 $app['service_repo'] = new Selotur\Repository\ServiceRepo($app['db']);
 
+if ( DEBUG_MODE ) {
+    $logger = new Doctrine\DBAL\Logging\DebugStack();
+    $app['db.config']->setSQLLogger($logger);
+    $app->error(function(\Exception $e, $code) use ($app, $logger) {
+        if ( $e instanceof PDOException and count($logger->queries) ) {
+            $query = array_pop($logger->queries);
+            $app['monolog']->err($query['sql'], array(
+                'params' => $query['params'],
+                'types' => $query['types']
+            ));
+        }
+    });
+    $app->after(function(Request $request, Response $response) use ($app, $logger) {
+        foreach ( $logger->queries as $query ) {
+            $app['monolog']->debug($query['sql'], array(
+                'params' => $query['params'],
+                'types' => $query['types']
+            ));
+        }
+    });
+}
+
 $checkPermission = function () use ($app) {
 	$auth = $app['session']->get('auth');
 	$supplier = $app['session']->get('supplier');
