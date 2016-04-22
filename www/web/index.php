@@ -86,7 +86,10 @@ $app->get('/logout', function(Application $app) {
 
 $app->get('/homestead', function (Application $app) {
 	$tempalteData['houses'] = $app['house_repo']->findByHomestead($app['session']->get('homestead'));
-	return $app['twig']->render('homestead.twig', $tempalteData);
+	$tempalteData['homestead'] = $app['homestead_repo']->findBySupplier($app['session']->get('supplier'));
+	$tempalteData['regions'] = $app['region_repo']->findAll();
+
+ 	return $app['twig']->render('homestead.twig', $tempalteData);
 })->before($checkPermission);
 
 $app->put('/homestead', function (Application $app, Request $request) {
@@ -94,8 +97,14 @@ $app->put('/homestead', function (Application $app, Request $request) {
 	foreach ($data as $id => $val) {
 		$app['house_repo']->changeEmptyPlace($id, $val);
 	}
+	$homestead['id_region'] = $request->get('id_region');
+	$homestead['area'] = $request->get('area');
+	$homestead['address'] = $request->get('address');
+
+	$app['homestead_repo']->updateHomestead($homestead, $app['session']->get('homestead'));
+
 	return $app->redirect('/homestead');
-});
+})->before($checkPermission);
 
 
 $app->get('/house', function (Application $app) {
@@ -143,6 +152,10 @@ $app->put('/house/edit/{id}', function (Request $request, Application $app, $id)
 $app->delete('/house/edit/{id}', function (Application $app, $id) {
 	$app['house_repo']->deleteHouse($id);
 	return $app->redirect('/homestead');
+})->before($checkPermission);
+
+$app->get('/service', function (Application $app) {
+
 });
 
 $app->error(function(\Exception $e, $code) {

@@ -11,7 +11,7 @@ class RegionRepo {
 	}
 
 	public function createObject($data) {
-		$place = new Entity\Place();
+		$place = new Entity\Region();
 		$place->setId($data['id']);
 		$place->setName($data['name']);
 		$place->setDescription($data['description']);

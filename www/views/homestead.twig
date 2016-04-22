@@ -11,9 +11,23 @@
     <a href="/service">Предоставляемые услуги</a>
 
     <div>
-    	<h3>Количество свободных мест в домике</h3>
-    	<form method="POST">
+        <form method="POST">
             <input type="hidden" name="_method" value="PUT"/>
+            <span>Регион</span>
+            <select name="id_region">
+                {% for region in regions %}
+                    {% if region.getId() == homestead.getRegion() %}
+                        <option value="{{region.getId()}}" selected>{{region.getName()}}</option>
+                    {% else %}
+                        <option value="{{region.getId()}}">{{region.getName()}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+
+            <span>Населенный пункт</span><input name="area" value="{{homestead.getArea()}}" maxlength="200"/>
+            <span>Адрес</span><input name="address" value="{{homestead.getAddress()}}" maxlength="200"/>
+
+            <h3>Количество свободных мест в домике</h3>
     		{% for house in houses %}
     			<span><a href="/house/edit/{{house.getId()}}">{{ house.getName() }}</a></span> 
     			<select name="{{ house.getId() }}">

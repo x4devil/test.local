@@ -15,9 +15,16 @@ class HomesteadRepo {
 		$homestead->setId($data['id']);
 		$homestead->setSupplier($data['id_supplier']);
 		$homestead->setRegion($data['id_region']);
+		$homestead->setAddress($data['address']);
+		$homestead->setArea($data['area']);
 
 		return $homestead;
 	}
+
+	public function updateHomestead($data, $id) {
+		$this->conn->update('homestead', $data, array('id'=>$id));
+	}
+
 
 	public function findBySupplier($supplier) {
 		$data = $this->conn->fetchAssoc('
