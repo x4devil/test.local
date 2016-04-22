@@ -47,6 +47,8 @@ $app['house_repo'] = new Selotur\Repository\HouseRepo($app['db'], $app);
 $app['region_repo'] = new Selotur\Repository\RegionRepo($app['db']);
 $app['live_type_repo'] = new Selotur\Repository\LiveTypeRepo($app['db']);
 $app['photo_repo'] = new Selotur\Repository\PhotoRepo($app['db']);
+$app['tourism_type_repo'] = new Selotur\Repository\TourismTypeRepo($app['db']);
+$app['service_repo'] = new Selotur\Repository\ServiceRepo($app['db']);
 
 $checkPermission = function () use ($app) {
 	$auth = $app['session']->get('auth');
@@ -188,7 +190,7 @@ $app->delete('/house/edit/{id}', function (Application $app, $id) {
 })->before($checkPermission);
 
 $app->get('/service', function (Application $app) {
-
+	
 	return $app['twig']->render('service.twig', $tempalteData);
 });
 

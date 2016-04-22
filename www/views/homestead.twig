@@ -32,10 +32,10 @@
     			<span><a href="/house/edit/{{house.getId()}}">{{ house.getName() }}</a></span> 
     			<select name="{{ house.getId() }}">
 	    			{% for place in 0..house.getPlace() %}
-		    			{% if loop.index == house.getEmptyPlace() %}
-		    				<option value="{{ loop.index }}" selected="true" >{{ place }}</option>
+		    			{% if place == house.getEmptyPlace() %}
+		    				<option value="{{ place }}" selected="true" >{{ place }}</option>
 		    			{% else %}
-		    				<option value="{{ loop.index }}">{{ place }}</option>
+		    				<option value="{{ place }}">{{ place }}</option>
 		    			{% endif %}
 					{% endfor %}
 				</select>

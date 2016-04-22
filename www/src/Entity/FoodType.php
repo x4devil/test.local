@@ -1,4 +1,5 @@
 <?php
+namespace Selotur\Entity;
 
 class FoodType {
 	protected $id;

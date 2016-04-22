@@ -28,26 +28,28 @@ class HomesteadRepo {
 			'select max(h.id) from homestead h');
 
 		$tourismTypes = $this->conn->fetchAll(
-			'select tt.id from tourism_type tt');
+			'select tt.id, tt.name from tourism_type tt');
 
 		foreach ($tourismTypes as $idTourismType) {
 			$this->conn->insert('homestead_tourism_type', 
 				array(
 					'id_homestead' => $idHomestead,
 					'id_tourism_type' => $idTourismType['id'],
+					'tourism_type_name' => $idTourismType['name'],
 					'active' => false,
 					'price' => 0
 					));
 		}
 
 		$services = $this->conn->fetchAll(
-			'select s.id from service s');
+			'select s.id, s.name from service s');
 
 		foreach ($services as $idService) {
 			$this->conn->insert('homestead_service', 
 				array(
 					'id_homestead' => $idHomestead,
 					'id_service' => $idService['id'],
+					'service_name' => $idService['name'],
 					'active' => false,
 					'price' => 0
 					));
