@@ -26,6 +26,10 @@ class HouseRepo {
 		$house->setLiveType($liveType);
 		$photos = $this->app['photo_repo']->findByHouse($data['id']);
 		$house->setPhotos($photos);
+		$house->setSpring($data['spring']);
+		$house->setSummer($data['summer']);
+		$house->setAutumn($data['autumn']);
+		$house->setWinter($data['winter']);
 		return $house;
 	}
 
@@ -37,6 +41,10 @@ class HouseRepo {
 		$house['name'] = $data['name'];
 		$house['empty_place'] = $data['empty_place'];
 		$house['id_live_type'] = $data['id_live_type'];
+		$house['spring'] = $data['spring'] != NULL ? 1 : 0;
+		$house['summer'] = $data['summer'] != NULL ? 1 : 0;
+		$house['autumn'] = $data['autumn'] != NULL ? 1 : 0;
+		$house['winter'] = $data['winter'] != NULL ? 1 : 0;
 		return $house;
 	}
 

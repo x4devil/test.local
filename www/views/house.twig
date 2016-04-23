@@ -7,7 +7,7 @@
 {% block content %}
 	<form method="POST">
 		<input type="hidden" name="_method" value="PUT"/>
-		<span>Название</span><input type="text" name="name" required maxlength="50" value={{house.getName()}}>
+		<span>Название</span><input type="text" name="name" required maxlength="50" value="{{house.getName()}}">
 		<span>Базовая стоимость койко-места без услуг</span><input type="text" name="price" required pattern="\d+(.\d{2})?" value="{{house.getPrice()}}">
 		<span>Количество мест</span><input type="text" name="place" required pattern="\d{2}" value="{{house.getPlace()}}">
 		<span>Описание</span><textarea name="description" required maxlength="500">{{house.getDescription()}}</textarea>
@@ -21,12 +21,39 @@
 				{% endif %}
 			{% endfor %}
 		</select>
+
+		{% if house.getSpring() == 1 %}
+			<input type="checkbox" name="spring" checked>Весна
+		{% else %}
+			<input type="checkbox" name="spring">Весна
+		{% endif %}
+
+		{% if house.getSummer() == 1 %}
+			<input type="checkbox" name="summer" checked>Лето
+		{% else %}
+			<input type="checkbox" name="summer">Лето
+		{% endif %}
+
+		{% if house.getAutumn() == 1 %}
+			<input type="checkbox" name="autumn" checked>Осень
+		{% else %}
+			<input type="checkbox" name="autumn">Осень
+		{% endif %}
+
+		{% if house.getWinter() == 1 %}
+			<input type="checkbox" name="winter" checked>Зима
+		{% else %}
+			<input type="checkbox" name="winter">Зима
+		{% endif %}
+
+		
 		{% if house == NULLL %}
 			<button type="submit">Создать домик</button>
 		{% else %}
 			<button type="submit">Сохранить</button>
 		{% endif %}
 	</form>
+
 	{% if house != NULLL %}
 	<form method="post">
 		<button>Удалить</button>

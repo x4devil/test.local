@@ -12,6 +12,10 @@ class House {
 	protected $emptyPlace; //Количество пустых
 	protected $liveType; //Тип проживания
 	protected $photos; //Фотографии
+	protected $spring;
+	protected $summer;
+	protected $autumn;
+	protected $winter;
 
 	public function getId() {
 		return (int)$this->id;
@@ -84,4 +88,36 @@ class House {
 	public function setPhotos($photos) {
 		$this->photos = $photos;
 	}
+
+	public function getSummer() {
+		return $this->summer;
+	}
+
+	public function setSummer($summer) {
+		$this->summer = $summer;
+	}
+
+	public function getSpring() {
+		return $this->spring;
+	}
+
+	public function setSpring($spring) {
+		$this->spring = $spring;
+	}
+
+	public function getAutumn() {
+		return $this->autumn;
+	}
+
+	public function setAutumn($autumn) {
+		$this->autumn = $autumn;
+	}
+
+	public function getWinter() {
+		return $this->winter;
+	}
+
+	public function setWinter($winter) {
+		$this->winter = $winter;
+	} 
 }

@@ -208,6 +208,7 @@ $app->get('/house/edit/{id}', function (Application $app, $id) {
 
 $app->put('/house/edit/{id}', function (Request $request, Application $app, $id) {
 	$data = $request->request->all();
+	var_dump($data);
 	$data['id_homestead'] = $app['session']->get('homestead');
 	$data['empty_place'] = $request->get('place');
 
