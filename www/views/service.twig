@@ -16,12 +16,12 @@
 			{% for service in services %}
 				<tr>
 					<td>{{ service.getServiceName() }}</td>
-					<td><input type="text" name="price-{{ service.getIdService() }}" value="{{ service.getPrice() }}" pattern="\d+" required/></td>
+					<td><input type="text" name="price-{{ service.getId() }}" value="{{ service.getPrice() }}" pattern="\d+" required/></td>
 					<td>
 						{% if service.getActive() == 1 %}
-							<input type="checkbox" name="active-{{ service.getIdService() }}" value="true" checked />
+							<input type="checkbox" name="active-{{ service.getId() }}" value="true" checked />
 						{% else %}
-							<input type="checkbox" name="active-{{ service.getIdService() }}" value="true"/>
+							<input type="checkbox" name="active-{{ service.getId() }}" value="true"/>
 						{% endif %}
 					</td>
 				</tr>
@@ -42,6 +42,27 @@
 					</td>
 				</tr>
 			{% endfor %}
+		</table>
+		<table>
+			<th>Название</th>
+			<th>Цена</th>
+			<th>Активен</th>
+			{% for type in foodTypes %}
+				<tr>
+					<td>
+						{{ type.getFoodTypeName() }}
+					</td>
+					<td>
+						<input type="text" name="food-price-{{ type.getId() }}" value="{{ type.getPrice() }}" pattern="\d+" required/></td>
+					<td>
+		                {% if type.getActive() == 1%}
+		                    <input type="checkbox" name="food-active-{{ type.getId() }}" checked>
+		                {% else %}
+		                    <input type="checkbox" name="food-active-{{ type.getId() }}">
+		                {% endif %}
+	                </td>
+                </tr>
+            {% endfor %}
 		</table>
 		<button type="subbmit">Сохранить</button>
 	</form>

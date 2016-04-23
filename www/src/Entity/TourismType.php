@@ -51,7 +51,7 @@ class TourismType {
 	}
 
 	public function getPrice() {
-		$this->price = $price;
+		return $this->price;
 	}
 
 	public function setPrice($price) {

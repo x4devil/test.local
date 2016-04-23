@@ -54,6 +54,20 @@ class HomesteadRepo {
 					'price' => 0
 					));
 		}
+
+		$foodTypes = $this->conn->fetchAll(
+			'select ft.id, ft.name from food_type ft');
+		foreach ($foodTypes as $foodType) {
+			$this->conn->insert('homestead_food_type',
+				array(
+					'id_homestead' => $idHomestead,
+					'id_food_type' => $foodType['id'],
+					'food_type_name' => $foodType['name'],
+					'active' => false,
+					'price' => 0
+					));
+		}
+
 	}
 
 	public function createObject($data) {

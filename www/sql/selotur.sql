@@ -35,3 +35,12 @@ INSERT INTO `service`(`id`, `name`) VALUES (NULL, 'Пешие экскурсии
 INSERT INTO `service`(`id`, `name`) VALUES (NULL, 'Автомобильные экскурсии');
 
 INSERT INTO `service`(`id`, `name`) VALUES (NULL, 'Сплав по реке');
+----Типы питания
+
+INSERT INTO `food_type`(`id`, `name`) VALUES (NULL, 'Без питания');# Затронута 1 строка.
+
+INSERT INTO `food_type`(`id`, `name`) VALUES (NULL, 'Только завтраки');# Затронута 1 строка.
+
+INSERT INTO `food_type`(`id`, `name`) VALUES (NULL, 'Трехразовое питание');# Затронута 1 строка.
+
+INSERT INTO `food_type`(`id`, `name`) VALUES (NULL, 'Все включено');# Затронута 1 строка.

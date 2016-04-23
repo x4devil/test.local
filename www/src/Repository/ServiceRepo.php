@@ -36,9 +36,9 @@ class ServiceRepo {
 		return $services;
 	}
 
-	public function updateService($idHomestead, $idService, $price, $active) {
+	public function updateService($id, $data) {
 		$this->conn->update('homestead_service', 
-			array('price'=>$price, 'active'=>$active), 
-			array('id_homestead' => $idHomestead,'id_service'=>$idService));
+			$data, 
+			$id);
 	}
 }

@@ -50,6 +50,7 @@ $app['photo_repo'] = new Selotur\Repository\PhotoRepo($app['db']);
 $app['tourism_type_repo'] = new Selotur\Repository\TourismTypeRepo($app['db']);
 $app['service_repo'] = new Selotur\Repository\ServiceRepo($app['db']);
 $app['supplier_service_repo'] = new Selotur\Repository\SupplierServiceRepo($app['db']);
+$app['food_type_repo'] = new Selotur\Repository\FoodTypeRepo($app['db']);
 
 if ( DEBUG_MODE ) {
     $logger = new Doctrine\DBAL\Logging\DebugStack();
@@ -148,6 +149,7 @@ $app->get('/homestead', function (Application $app) {
 	$templateData['regions'] = $app['region_repo']->findAll();
 	$templateData['tourismTypes'] = $app['tourism_type_repo']->findByHomestead($app['session']->get('homestead')); 
 
+
  	return $app['twig']->render('homestead.twig', $templateData);
 })->before($checkPermission);
 
@@ -224,10 +226,11 @@ $app->delete('/house/edit/{id}', function (Application $app, $id) {
 })->before($checkPermission);
 
 $app->get('/service', function (Application $app) {
-	$tempalteData['services'] = $app['service_repo']->findByHomestead($app['session']->get('homestead'));
-	$tempalteData['supplierServices'] = $app['supplier_service_repo']->findByHomestead($app['session']->get('homestead'));
+	$templateData['services'] = $app['service_repo']->findByHomestead($app['session']->get('homestead'));
+	$templateData['supplierServices'] = $app['supplier_service_repo']->findByHomestead($app['session']->get('homestead'));
+	$templateData['foodTypes'] = $app['food_type_repo']->findByHomestead($app['session']->get('homestead'));
 
-	return $app['twig']->render('service.twig', $tempalteData);
+	return $app['twig']->render('service.twig', $templateData);
 })->before($checkPermission);
 
 $app->put('/service', function (Application $app, Request $request ) {
@@ -236,29 +239,41 @@ $app->put('/service', function (Application $app, Request $request ) {
 		$services = $app['service_repo']->findByHomestead($app['session']->get('homestead'));
 
 		foreach ($services as $service) {
-			$price = $request->get('price-'.$service->getIdService());
-			$active = $request->get('active-'.$service->getIdService()) != NULL 
+			$id['id_homestead'] = $app['session']->get('homestead');
+			$id['id'] = $service->getId();
+
+			$data['price'] = $request->get('price-'.$service->getId());
+			$data['active'] = $request->get('active-'.$service->getId()) != NULL 
 				? 1
 				: 0;
 
-			$app['service_repo']->updateService(
-				$app['session']->get('homestead'),
-				$service->getIdService(),
-				$price,
-				$active);
+			$app['service_repo']->updateService($id, $data);
 		}
 		//Доп услуги
 		$services = $app['supplier_service_repo']->findByHomestead($app['session']->get('homestead'));
 
 		foreach ($services as $service) {
-			$id['id_homestead'] = $app['session']->get('homestead');
-			$id['id'] = $service->getId();
+			$id2['id_homestead'] = $app['session']->get('homestead');
+			$id2['id'] = $service->getId();
 
-			$data['name'] = $request->get('supp-name-'.$service->getId());
-			$data['price'] = $request->get('supp-price-'.$service->getId());
+			$data2['name'] = $request->get('supp-name-'.$service->getId());
+			$data2['price'] = $request->get('supp-price-'.$service->getId());
 
-			$app['supplier_service_repo']->updateService($id, $data);
+			$app['supplier_service_repo']->updateService($id2, $data2);
 		}
+
+		//Тип питания
+		$foodTypes = $app['food_type_repo']->findByHomestead($app['session']->get('homestead'));
+		foreach ($foodTypes as $foodType) {
+			$id3['id_homestead'] = $app['session']->get('homestead');
+			$id3['id'] = $foodType->getId();
+
+			$data3['active'] = $request->get('food-active-'.$foodType->getId()) != NULL ? 1 : 0;
+			$data3['price'] = $request->get('food-price-'.$foodType->getId());
+
+			$app['food_type_repo']->updateFoodType($id3, $data3);
+		}
+
 	} else if ($type == 3) {
 		//Добавление услуги
 		$data['name'] = $request->get('supp-name');
@@ -284,6 +299,10 @@ $app->get('/delete/{id}', function(Application $app,$id) {
 	$app['supplier_service_repo']->deleteService($id);
 	return $app->redirect('/service');
 })->before($checkPermission);
+
+$app->get('/request', function (Application $app) {
+	
+});
 
 $app->error(function(\Exception $e, $code) {
     if (DEBUG_MODE) {
