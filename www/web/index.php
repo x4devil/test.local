@@ -51,6 +51,8 @@ $app['tourism_type_repo'] = new Selotur\Repository\TourismTypeRepo($app['db']);
 $app['service_repo'] = new Selotur\Repository\ServiceRepo($app['db']);
 $app['supplier_service_repo'] = new Selotur\Repository\SupplierServiceRepo($app['db']);
 $app['food_type_repo'] = new Selotur\Repository\FoodTypeRepo($app['db']);
+$app['request_repo'] = new Selotur\Repository\RequestRepo($app['db']);
+
 
 if ( DEBUG_MODE ) {
     $logger = new Doctrine\DBAL\Logging\DebugStack();
@@ -301,8 +303,24 @@ $app->get('/delete/{id}', function(Application $app,$id) {
 })->before($checkPermission);
 
 $app->get('/request', function (Application $app) {
-	
+	$templateData['requests'] = $app['request_repo']->findByHomestead($app['session']->get('homestead'));
+	return $app['twig']->render('request.twig', $templateData);
 });
+
+$app->put('/request', function (Application $app, Request $req) {
+	$requests = $app['request_repo']->findByHomestead($app['session']->get('homestead'));
+
+	foreach ($requests as $request) {
+		$id['id'] = $request->getId();
+
+		$data['price'] = $req->get('req-price-'.$request->getId());
+		$data['state'] = $req->get('req-state-'.$request->getId());
+
+		$app['request_repo']->updateRequest($id, $data);
+	}
+
+	return $app->redirect('/homestead');
+})->before($checkPermission);
 
 $app->error(function(\Exception $e, $code) {
     if (DEBUG_MODE) {

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: 127.0.0.1
--- Время создания: Апр 23 2016 г., 16:38
+-- Время создания: Апр 23 2016 г., 18:04
 -- Версия сервера: 10.1.9-MariaDB
 -- Версия PHP: 5.3.13
 
@@ -248,6 +248,35 @@ INSERT INTO `region` (`id`, `name`, `description`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `request`
+--
+
+CREATE TABLE IF NOT EXISTS `request` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_house` int(11) NOT NULL,
+  `fio` varchar(200) NOT NULL,
+  `phone` varchar(12) NOT NULL,
+  `email` varchar(25) NOT NULL,
+  `date` date NOT NULL,
+  `price` int(11) NOT NULL,
+  `desc` varchar(300) DEFAULT NULL,
+  `services` varchar(500) NOT NULL,
+  `state` tinyint(1) NOT NULL COMMENT '0-новая; 1-одобрена; 2 -отклонена',
+  PRIMARY KEY (`id`),
+  KEY `id_house` (`id_house`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+--
+-- Дамп данных таблицы `request`
+--
+
+INSERT INTO `request` (`id`, `id_house`, `fio`, `phone`, `email`, `date`, `price`, `desc`, `services`, `state`) VALUES
+(1, 10, 'fio', 'phone', 'email', '2016-04-01', 110, '123123213fdsfdsfdsf, sdfdfgdfgfdg', 'asasdsadas', 2),
+(2, 10, 'fio', 'phone', 'email', '2016-04-01', 100, '123123213fdsfdsfdsf, sdfdfgdfgfdg', 'asasdsadas', 1);
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `service`
 --
 
@@ -383,6 +412,12 @@ ALTER TABLE `house`
 --
 ALTER TABLE `photo`
   ADD CONSTRAINT `photo_ibfk_2` FOREIGN KEY (`id_house`) REFERENCES `house` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+
+--
+-- Ограничения внешнего ключа таблицы `request`
+--
+ALTER TABLE `request`
+  ADD CONSTRAINT `request_ibfk_1` FOREIGN KEY (`id_house`) REFERENCES `house` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
 -- Ограничения внешнего ключа таблицы `supplier_service`
