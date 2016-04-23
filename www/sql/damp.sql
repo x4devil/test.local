@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: 127.0.0.1
--- Время создания: Апр 23 2016 г., 09:45
+-- Время создания: Апр 23 2016 г., 14:16
 -- Версия сервера: 10.1.9-MariaDB
 -- Версия PHP: 5.3.13
 
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `homestead` (
   PRIMARY KEY (`id`),
   KEY `id_supplier` (`id_supplier`),
   KEY `id_region` (`id_region`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
 
 --
 -- Дамп данных таблицы `homestead`
@@ -55,7 +55,23 @@ CREATE TABLE IF NOT EXISTS `homestead` (
 
 INSERT INTO `homestead` (`id`, `id_supplier`, `id_region`, `address`, `area`) VALUES
 (18, 19, 1, 'Адрес дом 25', 'Барнаул'),
-(19, 20, 2, 'Хорошая улица', 'Барнаул');
+(19, 20, 2, 'Хорошая улица', 'Барнаул'),
+(20, 21, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `homestead_food_type`
+--
+
+CREATE TABLE IF NOT EXISTS `homestead_food_type` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_food_type` int(11) NOT NULL,
+  `food_type_name` varchar(100) NOT NULL,
+  `price` int(11) NOT NULL,
+  `active` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -74,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `homestead_service` (
   PRIMARY KEY (`id`),
   KEY `id_homestead` (`id_homestead`),
   KEY `id_service` (`id_service`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=31 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=37 ;
 
 --
 -- Дамп данных таблицы `homestead_service`
@@ -92,7 +108,13 @@ INSERT INTO `homestead_service` (`id`, `id_homestead`, `id_service`, `price`, `a
 (27, 19, 3, 0, 0, '', 'Рыбалка'),
 (28, 19, 4, 2000, 1, '', 'Пешие экскурсии'),
 (29, 19, 5, 0, 0, '', 'Автомобильные экскурсии'),
-(30, 19, 6, 1999, 1, '', 'Сплав по реке');
+(30, 19, 6, 1999, 1, '', 'Сплав по реке'),
+(31, 20, 1, 0, 0, '', 'Сельхоз работы'),
+(32, 20, 2, 0, 0, '', 'Уход за скотом'),
+(33, 20, 3, 0, 0, '', 'Рыбалка'),
+(34, 20, 4, 0, 0, '', 'Пешие экскурсии'),
+(35, 20, 5, 0, 0, '', 'Автомобильные экскурсии'),
+(36, 20, 6, 0, 0, '', 'Сплав по реке');
 
 -- --------------------------------------------------------
 
@@ -111,7 +133,7 @@ CREATE TABLE IF NOT EXISTS `homestead_tourism_type` (
   KEY `id_tourism_tour` (`id_tourism_type`),
   KEY `id_homestead` (`id_homestead`),
   KEY `id_tourism_type` (`id_tourism_type`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=99 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=106 ;
 
 --
 -- Дамп данных таблицы `homestead_tourism_type`
@@ -131,7 +153,14 @@ INSERT INTO `homestead_tourism_type` (`id`, `id_homestead`, `id_tourism_type`, `
 (95, 19, 4, 0, 0, 'Гастрономический туризм'),
 (96, 19, 5, 1, 0, 'Спортивный туризм'),
 (97, 19, 6, 0, 0, 'Общинный туризм'),
-(98, 19, 7, 0, 0, 'Этнографический туризм');
+(98, 19, 7, 0, 0, 'Этнографический туризм'),
+(99, 20, 1, 0, 0, 'Агротуризм'),
+(100, 20, 2, 0, 0, 'Туризм пребывания'),
+(101, 20, 3, 0, 0, 'Практический туризм'),
+(102, 20, 4, 0, 0, 'Гастрономический туризм'),
+(103, 20, 5, 0, 0, 'Спортивный туризм'),
+(104, 20, 6, 0, 0, 'Общинный туризм'),
+(105, 20, 7, 0, 0, 'Этнографический туризм');
 
 -- --------------------------------------------------------
 
@@ -260,7 +289,7 @@ CREATE TABLE IF NOT EXISTS `supplier` (
   `email` varchar(25) NOT NULL,
   `password` varchar(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=22 ;
 
 --
 -- Дамп данных таблицы `supplier`
@@ -268,7 +297,8 @@ CREATE TABLE IF NOT EXISTS `supplier` (
 
 INSERT INTO `supplier` (`id`, `fio`, `phone`, `email`, `password`) VALUES
 (19, 'aaa', '123213213', 'a@a', 'aaa'),
-(20, 'bbb', '1232131', 'b@b', 'bbb');
+(20, 'bbb', '1232131', 'b@b', 'bbb'),
+(21, 'aaaф', '1111', 'aa@aa', 'bbbbb');
 
 -- --------------------------------------------------------
 
