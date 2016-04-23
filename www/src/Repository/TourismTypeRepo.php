@@ -35,4 +35,9 @@ class TourismTypeRepo {
 		}
 		return $types;
 	}
+
+	public function updateTourismType($id, $data) {
+		$this->conn->update('homestead_tourism_type', $data, $id);
+	}
+
 }

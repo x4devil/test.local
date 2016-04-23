@@ -27,20 +27,6 @@
 				</tr>
 			{% endfor %}
 		</table>
-		<button type="subbmit">Сохранить</button>
-	</form>
-
-	<form method="POST">
-		<input type="hidden" name="_method" value="PUT"/>
-		<input type="hidden" name="type" value="3"/>
-
-		Название:<input type="text" name="supp-name" required>
-		Цена: <input type="text" name="supp-price" required pattern="\d+">
-		<button type="subbmit">Добавить</button>
-	</form>
-	<form method="POST">
-		<input type="hidden" name="_method" value="PUT"/>
-		<input type="hidden" name="type" value="2"/>
 		<table>
 			<th>Название</th>
 			<th>Цена</th>
@@ -58,6 +44,14 @@
 			{% endfor %}
 		</table>
 		<button type="subbmit">Сохранить</button>
+	</form>
+	<form method="POST">
+		<input type="hidden" name="_method" value="PUT"/>
+		<input type="hidden" name="type" value="3"/>
+
+		Название:<input type="text" name="supp-name" required>
+		Цена: <input type="text" name="supp-price" required pattern="\d+">
+		<button type="subbmit">Добавить</button>
 	</form>
 
 	<a href="/homestead"><button>Назад</button></a>

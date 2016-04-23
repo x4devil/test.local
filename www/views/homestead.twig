@@ -41,6 +41,16 @@
 				</select>
                 из {{ house.getPlace() }}
     		{% endfor %}
+
+            <h3>Тип туризма</h3>
+
+            {% for type in tourismTypes %}
+                {% if type.getActive() == 1%}
+                    <input type="checkbox" name="type-{{ type.getId() }}" checked>{{ type.getTourismTypeName() }}
+                {% else %}
+                    <input type="checkbox" name="type-{{ type.getId() }}">{{ type.getTourismTypeName() }}
+                {% endif %}
+            {% endfor %}
             <button type="submit">Сохранить</button>
     	</form>
     </div>

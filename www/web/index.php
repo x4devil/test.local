@@ -143,11 +143,12 @@ $app->put('/registration', function (Request $request, Application $app) {
 });
 
 $app->get('/homestead', function (Application $app) {
-	$tempalteData['houses'] = $app['house_repo']->findByHomestead($app['session']->get('homestead'));
-	$tempalteData['homestead'] = $app['homestead_repo']->findBySupplier($app['session']->get('supplier'));
-	$tempalteData['regions'] = $app['region_repo']->findAll();
+	$templateData['houses'] = $app['house_repo']->findByHomestead($app['session']->get('homestead'));
+	$templateData['homestead'] = $app['homestead_repo']->findBySupplier($app['session']->get('supplier'));
+	$templateData['regions'] = $app['region_repo']->findAll();
+	$templateData['tourismTypes'] = $app['tourism_type_repo']->findByHomestead($app['session']->get('homestead')); 
 
- 	return $app['twig']->render('homestead.twig', $tempalteData);
+ 	return $app['twig']->render('homestead.twig', $templateData);
 })->before($checkPermission);
 
 $app->put('/homestead', function (Application $app, Request $request) {
@@ -160,6 +161,15 @@ $app->put('/homestead', function (Application $app, Request $request) {
 	$homestead['address'] = $request->get('address');
 
 	$app['homestead_repo']->updateHomestead($homestead, $app['session']->get('homestead'));
+
+	// Апдейтим виды туризма
+	$types = $app['tourism_type_repo']->findByHomestead($app['session']->get('homestead')); 
+	foreach ($types as $type) {
+		$data2['active'] = $request->get('type-'.$type->getId()) != NULL 
+			? 1 
+			: 0;
+		$app['tourism_type_repo']->updateTourismType(array('id'=> $type->getId()), $data2);
+	}
 
 	return $app->redirect('/homestead');
 })->before($checkPermission);
@@ -214,7 +224,6 @@ $app->delete('/house/edit/{id}', function (Application $app, $id) {
 
 $app->get('/service', function (Application $app) {
 	$tempalteData['services'] = $app['service_repo']->findByHomestead($app['session']->get('homestead'));
-	//$tempalteData['tourismTypes'] = $app['tourism_type_repo']->findByHomestead($app['session']->get('homestead'));
 	$tempalteData['supplierServices'] = $app['supplier_service_repo']->findByHomestead($app['session']->get('homestead'));
 
 	return $app['twig']->render('service.twig', $tempalteData);
@@ -237,8 +246,6 @@ $app->put('/service', function (Application $app, Request $request ) {
 				$price,
 				$active);
 		}
-	}
-	else if ($type == 2) {
 		//Доп услуги
 		$services = $app['supplier_service_repo']->findByHomestead($app['session']->get('homestead'));
 
@@ -251,7 +258,6 @@ $app->put('/service', function (Application $app, Request $request ) {
 
 			$app['supplier_service_repo']->updateService($id, $data);
 		}
-
 	} else if ($type == 3) {
 		//Добавление услуги
 		$data['name'] = $request->get('supp-name');

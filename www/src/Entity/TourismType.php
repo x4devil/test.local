@@ -42,7 +42,7 @@ class TourismType {
 		$this->tourismTypeName = $tourismTypeName;
 	}
 
-	public function getActiver() {
+	public function getActive() {
 		return $this->active;
 	}
 
