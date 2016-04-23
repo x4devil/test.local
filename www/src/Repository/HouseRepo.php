@@ -87,5 +87,18 @@ class HouseRepo {
 		}
 		return $this->createObject($data);
 	}
+
+	public function findByParams($name, $email) {
+		$data = $this->conn->fetchAll('
+			select h.* 
+			from house h 
+			where h.id = ?',
+			array($name, $email));
+
+		if ($data['id'] == NULL) {
+			return NULL;
+		}
+		return $this->createObject($data);
+	}
 	
 }

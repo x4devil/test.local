@@ -3,3 +3,30 @@
 {% block title %}
     Сельский туризм|Услуги
 {% endblock %}
+
+{% block content %}
+	<form method="POST">
+		<input type="hidden" name="_method" value="PUT"/>
+		<input type="hidden" name="type" value="1"/>
+
+		<table>
+			<th>Название</th>
+			<th>Цена</th>
+			<th>Активен</th>
+			{% for service in services %}
+				<tr>
+					<td>{{ service.getServiceName() }}</td>
+					<td><input type="text" name="price-{{ service.getIdService() }}" value="{{ service.getPrice() }}" pattern="\d+"/></td>
+					<td>
+						{% if service.getActive() == 1 %}
+							<input type="checkbox" name="active-{{ service.getIdService() }}" value="true" checked />
+						{% else %}
+							<input type="checkbox" name="active-{{ service.getIdService() }}" value="true"/>
+						{% endif %}
+					</td>
+				</tr>
+			{% endfor %}
+		</table>
+		<button type="subbmit">Сохранить</button>
+	</form>
+{% endblock %}

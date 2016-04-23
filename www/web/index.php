@@ -212,9 +212,31 @@ $app->delete('/house/edit/{id}', function (Application $app, $id) {
 })->before($checkPermission);
 
 $app->get('/service', function (Application $app) {
-	
+	$tempalteData['services'] = $app['service_repo']->findByHomestead($app['session']->get('homestead'));
+	$tempalteData['tourismTypes'] = $app['tourism_type_repo']->findByHomestead($app['session']->get('homestead'));
+
 	return $app['twig']->render('service.twig', $tempalteData);
-});
+})->before($checkPermission);
+
+$app->put('/service', function (Application $app, Request $request ) {
+	$params = $request->request->all();
+	$services = $app['service_repo']->findByHomestead($app['session']->get('homestead'));
+
+	foreach ($services as $service) {
+		$price = $request->get('price-'.$service->getIdService());
+		$active = $request->get('active-'.$service->getIdService()) != NULL 
+			? 1
+			: 0;
+
+		$app['service_repo']->updateService(
+			$app['session']->get('homestead'),
+			$service->getIdService(),
+			$price,
+			$active);
+	}
+
+	return $app->redirect('/service');
+})->before($checkPermission);
 
 $app->error(function(\Exception $e, $code) {
     if (DEBUG_MODE) {

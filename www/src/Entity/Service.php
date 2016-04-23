@@ -27,7 +27,7 @@ class Service {
 	}
 
 	public function getIdService() {
-		return $this->idService();
+		return $this->idService;
 	}
 
 	public function setIdService($idService) {
@@ -42,7 +42,7 @@ class Service {
 		$this->serviceName = $serviceName;
 	}
 
-	public function getActiver() {
+	public function getActive() {
 		return $this->active;
 	}
 
@@ -51,7 +51,7 @@ class Service {
 	}
 
 	public function getPrice() {
-		$this->price = $price;
+		return $this->price;
 	}
 
 	public function setPrice($price) {
