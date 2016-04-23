@@ -56,7 +56,7 @@
 
 	{% if house != NULLL %}
 	<form method="post">
-		<button>Удалить</button>
+		<button onclick="return confirm('Вы уверены?')">Удалить</button>
     	<input type="hidden" id="_method" name="_method" value="DELETE" />
 	</form>
 	{% endif %}

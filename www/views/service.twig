@@ -37,7 +37,7 @@
 					<td><input type="text" name="supp-price-{{ service.getId() }}" value="{{ service.getPrice() }}" pattern="\d+" required/></td>
 					<td>
 						<a href="/delete/{{ service.getId() }}">
-							<button type="button">Удалить</button>
+							<button type="button" onclick="return confirm('Вы уверены?')">Удалить</button>
 						</a>
 					</td>
 				</tr>
