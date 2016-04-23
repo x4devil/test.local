@@ -49,6 +49,7 @@ $app['live_type_repo'] = new Selotur\Repository\LiveTypeRepo($app['db']);
 $app['photo_repo'] = new Selotur\Repository\PhotoRepo($app['db']);
 $app['tourism_type_repo'] = new Selotur\Repository\TourismTypeRepo($app['db']);
 $app['service_repo'] = new Selotur\Repository\ServiceRepo($app['db']);
+$app['supplier_service_repo'] = new Selotur\Repository\SupplierServiceRepo($app['db']);
 
 if ( DEBUG_MODE ) {
     $logger = new Doctrine\DBAL\Logging\DebugStack();
@@ -213,28 +214,67 @@ $app->delete('/house/edit/{id}', function (Application $app, $id) {
 
 $app->get('/service', function (Application $app) {
 	$tempalteData['services'] = $app['service_repo']->findByHomestead($app['session']->get('homestead'));
-	$tempalteData['tourismTypes'] = $app['tourism_type_repo']->findByHomestead($app['session']->get('homestead'));
+	//$tempalteData['tourismTypes'] = $app['tourism_type_repo']->findByHomestead($app['session']->get('homestead'));
+	$tempalteData['supplierServices'] = $app['supplier_service_repo']->findByHomestead($app['session']->get('homestead'));
 
 	return $app['twig']->render('service.twig', $tempalteData);
 })->before($checkPermission);
 
 $app->put('/service', function (Application $app, Request $request ) {
-	$params = $request->request->all();
-	$services = $app['service_repo']->findByHomestead($app['session']->get('homestead'));
+	$type = $request->get('type');
+	if ($type == 1) {
+		$services = $app['service_repo']->findByHomestead($app['session']->get('homestead'));
 
-	foreach ($services as $service) {
-		$price = $request->get('price-'.$service->getIdService());
-		$active = $request->get('active-'.$service->getIdService()) != NULL 
-			? 1
-			: 0;
+		foreach ($services as $service) {
+			$price = $request->get('price-'.$service->getIdService());
+			$active = $request->get('active-'.$service->getIdService()) != NULL 
+				? 1
+				: 0;
 
-		$app['service_repo']->updateService(
-			$app['session']->get('homestead'),
-			$service->getIdService(),
-			$price,
-			$active);
+			$app['service_repo']->updateService(
+				$app['session']->get('homestead'),
+				$service->getIdService(),
+				$price,
+				$active);
+		}
+	}
+	else if ($type == 2) {
+		//Доп услуги
+		$services = $app['supplier_service_repo']->findByHomestead($app['session']->get('homestead'));
+
+		foreach ($services as $service) {
+			$id['id_homestead'] = $app['session']->get('homestead');
+			$id['id'] = $service->getId();
+
+			$data['name'] = $request->get('supp-name-'.$service->getId());
+			$data['price'] = $request->get('supp-price-'.$service->getId());
+
+			$app['supplier_service_repo']->updateService($id, $data);
+		}
+
+	} else if ($type == 3) {
+		//Добавление услуги
+		$data['name'] = $request->get('supp-name');
+		$data['price'] = $request->get('supp-price');
+		$data['id_homestead'] = $app['session']->get('homestead');
+
+		$app['supplier_service_repo']->insertService($data);
 	}
 
+	return $app->redirect('/service');
+})->before($checkPermission);
+
+$app->get('/delete/{id}', function(Application $app,$id) {
+	$service = $app['supplier_service_repo']->findById($id);
+	if ($service == NULL) {
+		return $app->redirect('/service');
+	}
+
+	if ($service->getHomestead() != $app['session']->get('homestead')) {
+		return $app->redirect('/service');
+	}
+
+	$app['supplier_service_repo']->deleteService($id);
 	return $app->redirect('/service');
 })->before($checkPermission);
 

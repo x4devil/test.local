@@ -92,13 +92,14 @@ class HouseRepo {
 		$data = $this->conn->fetchAll('
 			select h.* 
 			from house h 
-			where h.id = ?',
+			where h.name = ?',
 			array($name, $email));
 
-		if ($data['id'] == NULL) {
-			return NULL;
+		$types = array();
+		foreach ($data as $type) {
+			$types[] = $this->createObject($type);
 		}
-		return $this->createObject($data);
+		return $types;
 	}
 	
 }

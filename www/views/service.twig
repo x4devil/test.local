@@ -16,7 +16,7 @@
 			{% for service in services %}
 				<tr>
 					<td>{{ service.getServiceName() }}</td>
-					<td><input type="text" name="price-{{ service.getIdService() }}" value="{{ service.getPrice() }}" pattern="\d+"/></td>
+					<td><input type="text" name="price-{{ service.getIdService() }}" value="{{ service.getPrice() }}" pattern="\d+" required/></td>
 					<td>
 						{% if service.getActive() == 1 %}
 							<input type="checkbox" name="active-{{ service.getIdService() }}" value="true" checked />
@@ -29,4 +29,36 @@
 		</table>
 		<button type="subbmit">Сохранить</button>
 	</form>
+
+	<form method="POST">
+		<input type="hidden" name="_method" value="PUT"/>
+		<input type="hidden" name="type" value="3"/>
+
+		Название:<input type="text" name="supp-name" required>
+		Цена: <input type="text" name="supp-price" required pattern="\d+">
+		<button type="subbmit">Добавить</button>
+	</form>
+	<form method="POST">
+		<input type="hidden" name="_method" value="PUT"/>
+		<input type="hidden" name="type" value="2"/>
+		<table>
+			<th>Название</th>
+			<th>Цена</th>
+			<th>Удаление</th>
+			{% for service in supplierServices %}
+				<tr>
+					<td><input type="text" name="supp-name-{{ service.getId() }}" value="{{ service.getName() }}" required maxlength="100" /></td>
+					<td><input type="text" name="supp-price-{{ service.getId() }}" value="{{ service.getPrice() }}" pattern="\d+" required/></td>
+					<td>
+						<a href="/delete/{{ service.getId() }}">
+							<button type="button">Удалить</button>
+						</a>
+					</td>
+				</tr>
+			{% endfor %}
+		</table>
+		<button type="subbmit">Сохранить</button>
+	</form>
+
+	<a href="/homestead"><button>Назад</button></a>
 {% endblock %}
