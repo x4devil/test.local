@@ -109,5 +109,20 @@ class HouseRepo {
 		}
 		return $types;
 	}
+
+	public function findLastId() {
+		return $this->conn->fetchColumn(
+			'select max(h.id)
+			from house h');
+	}
+
+	public function findByPhotoId($id) {
+		$data = $this->conn->fetchAssoc(
+			'select h.* 
+			from house h 
+				join photo p on (h.id = p.id_house)
+			where p.id = ?', array($id));
+		return $this->createObject($data);
+	}
 	
 }

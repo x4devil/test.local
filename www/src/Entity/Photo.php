@@ -15,7 +15,7 @@ class Photo {
 	}
 
 	public function getPath()  {
-		return $this->photo;
+		return $this->path;
 	}
 
 	public function setPath($path) {

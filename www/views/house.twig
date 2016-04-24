@@ -5,61 +5,119 @@
 {% endblock %}
 
 {% block content %}
-	<form method="POST">
-		<input type="hidden" name="_method" value="PUT"/>
-		<span>Название</span><input type="text" name="name" required maxlength="50" value="{{house.getName()}}">
-		<span>Базовая стоимость койко-места без услуг</span><input type="text" name="price" required pattern="\d+(.\d{2})?" value="{{house.getPrice()}}">
-		<span>Количество мест</span><input type="text" name="place" required pattern="\d{2}" value="{{house.getPlace()}}">
-		<span>Описание</span><textarea name="description" required maxlength="500">{{house.getDescription()}}</textarea>
-		<span>Тип проживания</span>
-		<select name="id_live_type">
-			{% for liveType in liveTypes %}
-				{% if house.getLiveType().getId() == liveType.getId() %}
-					<option value="{{liveType.getId()}}" selected>{{liveType.getName()}}</option>
-				{% else %}
-					<option value="{{liveType.getId()}}">{{liveType.getName()}}</option>
-				{% endif %}
-			{% endfor %}
-		</select>
+		<script>
+			$(function(){
+			    $("input[type='submit']").click(function(){
+			        var $fileUpload = $("input[type='file']");
+			        if (parseInt($fileUpload.get(0).files.length) < 4){
+			        	return false;
+			        }
+			    });    
+			});​
+		</script>
+		<div class="wrapper">
+			<div class="title">Добавление домика</div>
+			<form method="POST" enctype="multipart/form-data">
+				<div class="clearfix">
+					<div class="left-panel">
+						<div class="subtitle">1. Заполните параметры домика</div>
+						<input type="hidden" name="_method" value="PUT"/>
+						<div class="input-panel">
+							<span>Название</span>
+							<input id="name" class="in" type="text" name="name" required maxlength="50" value="{{house.getName()}}" placeholder="Введите название">
+						</div>
+						<div class="input-panel">
+							<span>Базовая стоимость</span><input class="in" type="text" name="price" required pattern="\d+" value="{{house.getPrice()}}" maxlength="10" placeholder="Введите стоимость" title="Целое число">
+						</div>
+						<div class="input-panel">
+							<span>Количество мест</span><input class="in" type="text" name="place" required pattern="\d+" maxlength="2" value="{{house.getPlace()}}" placeholder="Введите количество мест" title="Целое число">
+						</div>
+						<div class="input-panel">
+							<span>Тип проживания</span>
+							<select class="select" name="id_live_type">
+								{% for liveType in liveTypes %}
+									{% if house.getLiveType().getId() == liveType.getId() %}
+										<option value="{{liveType.getId()}}" selected>{{liveType.getName()}}</option>
+									{% else %}
+										<option value="{{liveType.getId()}}">{{liveType.getName()}}</option>
+									{% endif %}
+								{% endfor %}
+							</select>
+						</div>
+						<textarea class="in" name="description" required maxlength="500" placeholder="Описание">{{house.getDescription()}}</textarea>
+						{% if house.getId() == NULL or photoCount < 4 %}
+							<div class="subtitle">2. Загрузите фотографии домика</div>
+							<input name="images[]" type="file" multiple accept="image/jpeg,image/png"/>
+						{% endif %}
 
-		{% if house.getSpring() == 1 %}
-			<input type="checkbox" name="spring" checked>Весна
-		{% else %}
-			<input type="checkbox" name="spring">Весна
-		{% endif %}
+					</div>
+					<div class="right-panel">
+						<div class="panel" >
+							<div class="header">Сезон приема</div>
+							<div class="input-panel">
+								{% if house.getSpring() == 1 %}
+									<input id="spring" type="checkbox" name="spring" checked><label for="spring">Весна</label>
+								{% else %}
+									<input  id="spring" type="checkbox" name="spring"><label for="spring">Весна</label>
+								{% endif %}
+							</div>
+							<div class="input-panel">
+								{% if house.getSummer() == 1 %}
+									<input id="summer" type="checkbox" name="summer" checked><label for="summer">Лето</label> 
+								{% else %}
+									<input id="summer" type="checkbox" name="summer"><label for="summer">Лето</label> 
+								{% endif %}
+							</div>
+							<div class="input-panel">
+								{% if house.getAutumn() == 1 %}
+									<input id="autumn" type="checkbox" name="autumn" checked><label for="autumn">Осень</label> 
+								{% else %}
+									<input id="autumn" type="checkbox" name="autumn"><label for="autumn">Осень</label> 
+								{% endif %}
+							</div>
+							<div class="input-panel">
+								{% if house.getWinter() == 1 %}
+									<input id="winter" type="checkbox" name="winter" checked><label for="winter">Зима</label> 
+								{% else %}
+									<input id="winter" type="checkbox" name="winter"><label for="winter">Зима</label> 
+								{% endif %}	
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="clearfix">
+					{% if house.getId() != NULL %}
+						{% for photo in house.getPhotos() %}
+							<div class="img-panel">
+								<div class="img-panel-img"><img src="{{photo.getPath()}}" width="150px" height="150px" /></div>
+								<div class="img-panel-btn"><a href="/delete/img/{{photo.getId()}}"><button class="btn" type="button">Удалить</button></a></div>
+							</div>
+						{% endfor %}
+					{% endif %}
+				</div>
+				<div class="button">
+					{% if house == NULLL %}
+						<input type="submit" value="Создать домик">
+					{% else %}
+						<input type="submit" value="Сохранить">
+					{% endif %}
+				</div>
+			</form>
 
-		{% if house.getSummer() == 1 %}
-			<input type="checkbox" name="summer" checked>Лето
-		{% else %}
-			<input type="checkbox" name="summer">Лето
-		{% endif %}
-
-		{% if house.getAutumn() == 1 %}
-			<input type="checkbox" name="autumn" checked>Осень
-		{% else %}
-			<input type="checkbox" name="autumn">Осень
-		{% endif %}
-
-		{% if house.getWinter() == 1 %}
-			<input type="checkbox" name="winter" checked>Зима
-		{% else %}
-			<input type="checkbox" name="winter">Зима
-		{% endif %}
-
-		
-		{% if house == NULLL %}
-			<button type="submit">Создать домик</button>
-		{% else %}
-			<button type="submit">Сохранить</button>
-		{% endif %}
-	</form>
-
-	{% if house != NULLL %}
-	<form method="post">
-		<button onclick="return confirm('Вы уверены?')">Удалить</button>
-    	<input type="hidden" id="_method" name="_method" value="DELETE" />
-	</form>
-	{% endif %}
-	
-	<a href="/homestead"><button>Назад</button></a>
+			{% if house != NULLL %}
+			<form method="post">
+				<div class="button">
+					<input type="submit" onclick="return confirm('Вы уверены?')" value="Удалить">
+				</div>
+		    	<input type="hidden" id="_method" name="_method" value="DELETE" />
+			</form>
+			{% endif %}
+			
+			<a href="/homestead">
+				<div class="button">
+					<input type="submit" value="Назад">
+				</div>
+			</a>
+		</div>
+	</div>
 {% endblock %}

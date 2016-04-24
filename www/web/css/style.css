@@ -290,3 +290,158 @@ input[type="text"].check{
 	margin-top: 35px;
 	margin-left: 20px;
 }
+/*---------------------***********************------------------------*/
+.in {
+    width: 200px;
+    outline: none;
+    padding: 3px 10px;
+    margin-bottom: 15px;
+    background-color: #fff;
+    border: 2px solid #E1E1E1;
+    border-radius: 7px;
+}
+
+textarea.in {
+	width: 490px;
+	margin-top: 22px;
+}
+
+.select {
+    width: 120px;
+    border: 1px solid #DDD;
+    cursor: pointer;
+    outline: none;
+    border-radius: 5px;
+    margin-left: 10px;
+    margin-bottom: 5px;
+}
+.input-panel {
+	width: 100%;
+	margin-top: 22px;
+	display: block;
+	height: 26px;
+	border: 1px solid #DFDFDF;
+	border-radius: 2px 2px 2px 2px;
+	padding: 5px;
+	background: linear-gradient(to bottom, #E7E7E7, #FFF);
+}
+
+.input-panel .in {
+	float: right;
+}
+.input-panel select {
+	float: right;
+	width: 223px;
+}
+.input-panel input[type="checkbox"] {
+    display: none;
+}
+.input-panel label {
+    border-radius: 7px;
+    background: #FFF;
+    border: 1px solid #DDD;
+    font-size: 12px;
+    width: 155px;
+    margin-left: 5px;
+    margin-bottom: 5px;
+    padding: 0px;
+    cursor: pointer;
+    height: 16px;
+    display: inline-block;
+}
+.input-panel label::before {
+
+    display: inline-block;
+    content: "";
+    width: 20px;
+    height: 16px;
+    border: 1px solid #DDD;
+    border-radius: 7px 0 0 7px;
+    margin-right: 3px;
+    background: #F0F0F0;
+    margin: -1px 3px -6px -2px;
+}
+.input-panel input[type=checkbox]:checked + label:before{
+	background: linear-gradient(to bottom, #F1ECF3, #9C7AAA);
+}
+.title {
+	text-align: center;
+	background: linear-gradient(to bottom, #F1ECF3, #9C7AAA);
+	border-radius: 7px 7px 7px 7px;
+	color: #FFF;
+	padding: 4px 5px;
+	font-size: 16px;
+	font-weight: 900;
+	margin: 0 auto;
+	width: 200px;
+}
+.subtitle {
+	text-align: center;
+	background: linear-gradient(to bottom, #F1ECF3, #9C7AAA);
+	border-radius: 7px 7px 7px 7px;
+	color: #FFF;
+	padding: 4px 5px;
+	font-size: 14px;
+	font-weight: 500;
+	width: 200px;
+}
+.wrapper {
+	width: 1000px;
+	margin: 0 auto;
+}
+.left-panel {
+	float: left;
+	width: 500px;
+}
+.right-panel {
+	float: right;
+	width: 500px;
+	height: 361px;
+}
+.right-panel .panel {
+	width: 200px;
+	margin-top: 45px;
+	float: left;
+	margin-left: 40px;
+	height: 296px;
+}
+.right-panel .panel>.input-panel {
+	width: 100%;
+	margin-top: 5px;
+	margin-left: 10px;
+	display: block;
+	border: none;
+	border-radius: 0 0;
+	padding: 0;
+	background: none;
+}
+input[type=file] {
+	border: 2px solid #FFF;
+	background: linear-gradient(to bottom, #F1ECF3, #9C7AAA);
+	border-radius: 7px;
+	width: 100%;
+	padding: 4px;
+	color: #FFF;
+	font-weight: 500;
+	margin-top: 22px;
+}
+.img-panel {
+	display: block;
+	float: left;
+	margin-left: 48px;
+}
+.img-panel:first-child {
+	margin-left: 0;
+}
+.img-panel-btn {
+	text-align: center;
+}
+.btn {
+	border: 2px solid #FFF;
+	background: linear-gradient(to bottom, #F1ECF3, #9C7AAA);
+	border-radius: 7px;
+	width: 100%;
+	padding: 4px;
+	color: #FFF;
+	font-weight: 500;
+}

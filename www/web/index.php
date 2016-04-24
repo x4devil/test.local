@@ -52,9 +52,10 @@ $app['service_repo'] = new Selotur\Repository\ServiceRepo($app['db']);
 $app['supplier_service_repo'] = new Selotur\Repository\SupplierServiceRepo($app['db']);
 $app['food_type_repo'] = new Selotur\Repository\FoodTypeRepo($app['db']);
 $app['request_repo'] = new Selotur\Repository\RequestRepo($app['db']);
+$app['sub_repo'] = new Selotur\Repository\SubSupplierRepo($app['db']);
 
 
-if ( DEBUG_MODE ) {
+if ( DEBUG_MODE) {
     $logger = new Doctrine\DBAL\Logging\DebugStack();
     $app['db.config']->setSQLLogger($logger);
     $app->error(function(\Exception $e, $code) use ($app, $logger) {
@@ -192,6 +193,27 @@ $app->put('/house', function (Request $request, Application $app) {
 
 	$app['house_repo']->insertHouse(
 		$app['house_repo']->createArray($data));
+
+	$lastId = $app['house_repo']->findLastId();
+	$files = $request->files; 
+	
+	if ($files != NULL) {
+		$index = 1;
+
+		$path = '/web/img/'.$app['session']->get('homestead').'/'.$lastId.'/';
+		$path2 = __DIR__.'//img/'.$app['session']->get('homestead').'/'.$lastId.'/';
+		foreach ($files as $file => $val) {
+			foreach ($val as $v) { 
+				if ($index > 4) {
+					break;
+				}
+				$v->move($path2, $index.'.jpg');
+				$app['photo_repo']->insertPhoto(array('path' => $path.$index.'.jpg', 'id_house' => $lastId));
+				$index++;
+			}			
+			
+		}
+	}
 	return $app->redirect('/homestead');
 })->before($checkPermission);
 
@@ -203,27 +225,60 @@ $app->get('/house/edit/{id}', function (Application $app, $id) {
 		|| $house->getHomestead() != $app['session']->get('homestead')) {
 		return $app->redirect('/homestead');
 	}
+	$templateData['photoCount'] = count($house->getPhotos());
+	$templateData['house'] = $house;
+	$templateData['liveTypes'] = $liveTypes;
 
-	$tempalteData['house'] = $house;
-	$tempalteData['liveTypes'] = $liveTypes;
-
-	return $app['twig']->render('house.twig', $tempalteData);
+	return $app['twig']->render('house.twig', $templateData);
 })->before($checkPermission);
 
 $app->put('/house/edit/{id}', function (Request $request, Application $app, $id) {
 	$data = $request->request->all();
-	var_dump($data);
 	$data['id_homestead'] = $app['session']->get('homestead');
+	$house = $app['house_repo']->findById($id);
+	if ($house->getHomestead() != $data['id_homestead']) {
+		return $app->redirect('/homestead');
+	}
 	$data['empty_place'] = $request->get('place');
 
 	$app['house_repo']->updateHouse(
 		$app['house_repo']->createArray($data),
 		$id);
+	$files = $request->files; 
+	
+	if ($files != NULL) {
+		$index = count($house->getPhotos()) + 1;
+
+		$path = '/web/img/'.$app['session']->get('homestead').'/'.$id.'/';
+		$path2 = __DIR__.'//img/'.$app['session']->get('homestead').'/'.$id.'/';
+		foreach ($files as $file => $val) {
+			foreach ($val as $v) { 
+				if ($index > 4) {
+					break;
+				}
+				$name = md5(date_default_timezone_get().$index).'.jpg';
+				$v->move($path2, $name);
+				$app['photo_repo']->insertPhoto(array('path' => $path.$name, 'id_house' => $id));
+				$index++;
+			}			
+		}
+	}
+
 	return $app->redirect('/homestead');
+})->before($checkPermission);
+
+$app->get('/delete/img/{id}', function (Application $app, $id) {
+	$house = $app['house_repo']->findByPhotoId($id);
+	if ($house->getHomestead() != $app['session']->get('homestead')) {
+		return '/homestead';
+	}
+	$app['photo_repo']->deletePhoto(array('id'=> $id));
+	return $app->redirect('/house/edit/'.$house->getId());
 })->before($checkPermission);
 
 $app->delete('/house/edit/{id}', function (Application $app, $id) {
 	$app['house_repo']->deleteHouse($id);
+
 	return $app->redirect('/homestead');
 })->before($checkPermission);
 
@@ -322,7 +377,42 @@ $app->put('/request', function (Application $app, Request $req) {
 	return $app->redirect('/homestead');
 })->before($checkPermission);
 
-$app->error(function(\Exception $e, $code) {
+$app->get('/subsupplier', function (Application $app) {
+	$templateData['subs'] = $app['sub_repo']->findBySupplier($app['session']->get('supplier'));
+
+	return $app['twig']->render('subsupplier.twig', $templateData);
+});
+
+$app->put('/subsupplier', function (Application $app, Request $request) {
+	if ($request->get('type') == 1) {
+		$data['fio'] = $request->get('fio');
+		$data['service'] = $request->get('service');
+		$data['price'] = $request->get('price');
+		$data['id_supplier'] = $app['session']->get('supplier');
+
+		$app['sub_repo']->insertSub($data);		
+	} else {
+		$subs = $app['sub_repo']->findBySupplier($app['session']->get('supplier'));
+		foreach ($subs as $sub) {
+			$data['service'] = $request->get('service-'.$sub->getId());
+			$data['price'] = $request->get('price-'.$sub->getId());
+
+			$app['sub_repo']->updateSub(array('id' => $sub->getId()), $data);
+		}
+	}
+	return $app->redirect('/subsupplier');
+});
+
+$app->get('/delete/sub/{id}', function (Application $app, $id) {
+	$sub = $app['sub_repo']->findById($id);
+	if ($sub->getSupplier() != $app['session']->get('supplier')) {
+		return $app->redirect('/homestead');
+	}
+	$app['sub_repo']->deleteSub(array('id' => $id));
+	return $app->redirect('/subsupplier');
+});
+
+$app->error(function(\Exception $e, $code) use ($app) {
     if (DEBUG_MODE) {
     	return $e;
     } else {

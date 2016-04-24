@@ -1,0 +1,47 @@
+{% extends "adminbase.twig" %}
+
+{% block title %}
+    Сельский туризм|Субподрядчики
+{% endblock %}
+
+{% block content %}
+<form method="POST">
+	<input type="hidden" name="_method" value="PUT"/>
+	<input type="hidden" name="type" value="1"/>
+
+	ФИО<input type="text" name="fio" required>
+	СЕРВИС<input type="text" name="service" required  maxlength="200">
+	ЦЕНА<input type="text" name="price" required pattern="\d+" title="Целое число">
+
+	<button type="subbmit" class="btn">Добавить</button>
+</form>
+
+<form method="POST">
+	<input type="hidden" name="_method" value="PUT"/>
+	<input type="hidden" name="type" value="2"/>
+	<table>
+		<th>
+			ФИО
+		</th>
+		<th>
+			Сервис
+		</th>
+		<th>
+			Цена
+		</th>
+		<th>
+			Удаление
+		</th>
+
+		{% for sub in subs %}
+			<tr>
+				<td>{{sub.getFio()}}</td>
+				<td><input type="text" name="service-{{sub.getId()}}" value="{{sub.getService()}}" required maxlength="200"></td>
+				<td><input type="text" name="price-{{sub.getId()}}" value="{{sub.getPrice()}}" required pattern="\d+" title="Целое число"></td>
+				<td><a href="/delete/sub/{{sub.getId()}}"><button class="btn" type="subbmit">Удалить</button></a></td>
+			</tr>
+		{% endfor %}
+	</table>
+	<button type="subbmit" class="btn">Сохранить</button>
+</form>
+{% endblock %}
