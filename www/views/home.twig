@@ -1,0 +1,121 @@
+{% extends "base.twig" %}
+
+{% block title %}
+    Сельский туризм| {{house.name}}
+{% endblock %}
+
+{% block content %}
+	<h4>Услуги усадьбы</h4>
+	<form method="" action="">
+	<input type="hidden" value="" id="jiage">
+		<div class="services">
+			<div class="service-panel">
+				<div class="header">
+					Досуг
+				</div>
+				{% for service in services %}
+					<div class="service">
+						<input type="checkbox" class="price-value" id="check1{{loop.index}}" value="{{service.price}}">
+						<label for="check1{{loop.index}}">{{service.service_name}}</label>
+					</div>
+				{% endfor %}
+			</div>
+			<div class="service-panel">
+				<div class="header">
+					Тип питания
+				</div>
+				{% for food in foods %}
+					<div class="service">
+					{% if loop.index == 1%}
+						<input type="radio" class="price-value" id="check2{{loop.index}}" name="1" value="{{food.price}}" checked>
+					{% else %}
+						<input type="radio" class="price-value" id="check2{{loop.index}}" name="1" value="{{food.price}}">
+					{% endif %}
+						<label for="check2{{loop.index}}">{{food.food_type_name}}</label>
+					</div>
+				{% endfor %}
+			</div>
+			<div class="service-panel">
+				<div class="header">
+					Дополнительные услуги
+				</div>
+				{% for supService in supServices %}
+					<div class="service">
+						<input type="checkbox" class="price-value" id="check3{{loop.index}}" value="{{supService.price}}">
+						<label for="check3{{loop.index}}">{{supService.name}}</label>
+					</div>
+				{% endfor %}
+			</div>
+			<div class="service-panel count">
+				<div class="header">
+					Количество человек
+				</div>
+				<select id="counter">
+				{% for i in 1..house.empty_place %}
+					<option>{{loop.index}}</option>
+				{% endfor %}
+				</select>
+			</div>
+			<div class="service-panel count">
+				<div class="header">
+					Дата пребывания
+				</div>
+				<input type="date" class="date" placeholder="Дата">
+			</div>
+			{% if (house.summer or house.autumn or house.winter or house.spring) %}
+			<div class="service-panel season">
+				<div class="header">
+					Время года
+				</div>
+				{% if house.summer %}
+					<input type="checkbox" id="check01">
+					<label for="check01">Лето</label>
+				{% endif %}
+				{% if house.autumn %}
+					<input type="checkbox" id="check02">
+					<label for="check02">Осень</label>
+				{% endif %}
+				{% if house.winter %}
+					<input type="checkbox" id="check03">
+					<label for="check03">Зима</label>
+				{% endif %}
+				{% if house.spring %}
+					<input type="checkbox" id="check04">
+					<label for="check04">Весна</label>
+				{% endif %}
+			</div>
+			{% endif %}
+			<div class="price-panel">
+				<div class="header">
+					Общая цена
+				</div>
+				<div class="wrapper">
+					<div class="cell">
+						{{house.price}}
+					</div>
+				</div>
+			</div>
+			<div class="home-panel clearfix">
+				<div class="header">
+					{{house.name}}
+				</div>
+				<h5>Основная информация</h5>
+				<img src="{{images[0].path}}" class="main-img">
+				<div class="main-information">
+					<p>ФИО хозяина: {{supplier.fio}}</p>
+					<p>Адрес: {{house.address}}</p>
+					<p>Телефон: {{supplier.phone}}</p>
+				</div>
+				{% if images[1] != null %}
+				<h4 class="clearfix">Подробная информация</h4>
+				<div class="more-img clearfix">
+					{% for i in 1..images.lenght %}
+						<img src="{{images[i].path}}">
+					{% endfor %}
+				</div>
+				{% endif %}
+			</div>
+			<a href="/request"> Подать заявку</a>
+		</div>
+	</form>
+{% endblock %}

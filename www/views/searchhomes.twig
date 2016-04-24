@@ -1,0 +1,91 @@
+{% extends "base.twig" %}
+
+{% block title %}
+    Сельский туризм|Усадьбы
+{% endblock %}
+
+{% block content %}
+<div class="content">
+	<div class="panel">
+				<div class="header">
+					Фильтры по параметрам
+				</div>
+				<div class="filters clearfix">
+					<div class="column">
+						<div class="category">
+							<div class="header">
+								Вид туризма
+							</div>
+							{% for tourism in tourismType %}
+									<div class="filter">
+										<input type="checkbox" id="check1{{loop.index}}">
+										<label for="check1{{loop.index}}">{{tourism.name}}</label>
+									</div>
+							{% endfor %}
+						</div>
+						<div class="category">
+							<div class="header">
+								Тип проживания
+							</div>
+							{% for live in liveType %}
+								<div class="filter">
+									<input type="checkbox" id="check2{{loop.index}}">
+									<label for="check2{{loop.index}}">{{live.name}}</label>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+					<div class="column">
+						<div class="category">
+							<div class="header">
+								Досуг
+							</div>
+							{% for service in services %}
+								<div class="filter">
+									<input type="checkbox" id="check3{{loop.index}}">
+									<label for="check3{{loop.index}}">{{service.name}}</label>
+								</div>
+							{% endfor %}
+						</div>
+						<div class="category">
+							<div class="header">
+								Сезон приема
+							</div>
+							<div class="filter">
+								<input type="checkbox" id="check01">
+								<label for="check01">Лето</label>
+							</div>
+							<div class="filter">
+								<input type="checkbox" id="check02">
+								<label for="check02">Осень</label>
+							</div>
+							<div class="filter">
+								<input type="checkbox" id="check03">
+								<label for="check03">Зима</label>
+							</div>
+							<div class="filter">
+								<input type="checkbox" id="check04">
+								<label for="check04">Весна</label>
+							</div>
+						</div>
+					</div>
+					<div class="column last-column">
+						<div class="category">
+							<div class="header">
+								Тип питания
+							</div>
+							{% for food in foodType %}
+								<div class="filter">
+									<input type="checkbox" id="check6{{loop.index}}">
+									<label for="check6{{loop.index}}">{{food.name}}</label>
+								</div>
+							{% endfor %}
+							</div>
+					</div>
+					<div class="button">
+						<input type="submit" value="Применить">
+					</div>
+				</div>
+			</div>
+		</div>
+{% endblock %}

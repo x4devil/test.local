@@ -1,0 +1,46 @@
+{% extends "base.twig" %}
+
+{% block title %}
+    Сельский туризм| Оформить заявку
+{% endblock %}
+
+{% block content %}
+	<div class="content">
+		<div class="panel">
+			<div class="header">
+				Заявка
+			</div>
+			<div class="request clearfix">
+				<div class="panel">
+					<div class="header">
+						Название домика
+					</div>
+					<div class="informat">
+						<p class="fuwu"> fghjkl;fdghj </p>
+						<p class="shijian"> fghjkl;fdghj </p>
+						<p class="jiage"> fghjkl;fdghj </p>
+					</div>
+				</div>
+				<div class="panel">
+					<div class="header">
+						Контактные данные
+					</div>
+					<input class="data" placeholder="ФИО" type="text">
+					<input class="data" placeholder="Email" type="text">
+					<input class="data" placeholder="Номер телефона" type="text">
+				</div>
+				<div class="panel">
+					<div class="header">
+						Пожелания
+					</div>
+					<div class="wishes">
+						<textarea placeholder="Сообщение">
+						
+						</textarea>
+					</div>
+				</div>
+				<a href="/request"> Подать заявку</a>
+			</div>
+		</div>
+	</div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "base.twig" %}
+
+{% block title %}
+    Сельский туризм|Усадьбы
+{% endblock %}
+
+{% block content %}
+<div class="content">
+	<div class="search-block clearfix">
+				{%for house in houses%}
+					<div class="result-panel">
+						<div class="panel clearfix">
+							<div class="header">
+								{{house.name}}
+							</div>
+							<img class="resust-img" src="{{images[house.house_id]}}">
+							<div class="result-information">
+								Основная информация:
+								<p class="info">Базовая цена: {{house.price}}</p>
+								<p class="info">Адрес: {{house.address}}</p>
+							</div>
+							<a href="/homes/{{house.house_id}}">Подробнее...</a>	
+						</div>
+					</div>
+				{% endfor %}
+				{% if pageCount != 0%}
+					{% if pageCount == 1 %}
+						<div class="pagination">
+							<a class="active one">1</a>
+						</div>
+					{% else %}
+						<div class="pagination">
+							{% for page in pageCount..1 %}
+								{% if loop.index == activePage %}
+									<a class="active">{{ loop.index }}</a>
+								{% else %}
+									<a href="/homes/page{{loop.index}}">{{ loop.index }}</a>
+								{% endif %}
+							{% endfor %}
+						</div>
+					{% endif %}
+				{% endif %}
+			</div>
+</div>
+{% endblock %}

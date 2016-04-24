@@ -91,9 +91,85 @@ $checkPermission = function () use ($app) {
 };
 
 $app->get('/', function (Application $app) {
+	return $app['twig']->render('index.twig',array('sideBar' => 1));
+});
+/*--------------------------------------------------------------*/
+$app->get('/homes', function (Application $app) {
+	$conn = $app['db'];
+	$foodType = $conn->fetchAll("SELECT * FROM food_type");
+	$liveType = $conn->fetchAll("SELECT * FROM live_type");
+	$services = $conn->fetchAll("SELECT * FROM service");
+	$tourismType = $conn->fetchAll("SELECT * FROM tourism_type");
+	return $app['twig']->render('searchhomes.twig',array('sideBar' => 1,
+														'foodType' => $foodType,
+														'liveType' => $liveType,
+														'services' => $services,
+														'tourismType' => $tourismType));
+});
+
+$app->get('/homes/page{pageId}', function (Application $app, $pageId) {
+	$conn = $app['db'];
+	$countInPage = 5;
+	
+	$offset = $pageId * $countInPage;
+	$pageCount = $conn->fetchColumn("SELECT count(house.id) FROM house");
+	
+	if($pageCount != 0) {
+		if($pageCount % $countInPage == 0){
+			$pageCount = (int)($pageCount / $countInPage);
+		} else {
+			$pageCount = (int)($pageCount / $countInPage + 1);
+		}
+	}
+	
+	$houses = $conn->fetchAll("SELECT house.*, homestead.*, house.id as house_id 
+								FROM house, homestead 
+								WHERE house.id_homestead = homestead.id
+								LIMIT ".($offset - $countInPage).",". $countInPage);
+								
+	foreach($houses as $house){
+		$images[$house['house_id']] = $conn->fetchColumn("SELECT photo.path FROM photo WHERE photo.id_house = ? ORDER BY photo.id LIMIT 1",array($house['house_id']));
+		};
+
+	return $app['twig']->render('homes.twig', array('houses' => $houses,
+													'pageCount' => $pageCount,
+													'activePage' => $pageId,
+													'images' => $images,
+													'sideBar' => 1));
 	return $app['twig']->render('index.twig');
 });
 
+$app->get('/homes/{houseId}', function (Application $app, $houseId) {
+	$conn = $app['db'];
+	
+	$house = $conn->fetchAssoc("SELECT house.*, homestead.*, house.id as house_id, house.id_homestead as 'id_homestead' 
+								FROM house, homestead 
+								WHERE house.id = ? and house.id_homestead = homestead.id", array($houseId));
+								
+	$images = $conn->fetchAll("SELECT * FROM photo WHERE id_house = ?",array($houseId));
+	
+	$id_homestead = $house['id_homestead'];
+	$services = $conn->fetchAll("SELECT * FROM homestead_service WHERE id_homestead = ? AND active = '1'",array($id_homestead));
+	$supplierServices = $conn->fetchAll("SELECT * FROM supplier_service WHERE id_homestead = ?",array($id_homestead));
+	$foods = $conn->fetchAll("SELECT * FROM homestead_food_type WHERE id_homestead = ? AND active = '1'",array($id_homestead));
+
+	$supplier = $conn->fetchAssoc("SELECT supplier.* FROM supplier, homestead WHERE homestead.id = '$id_homestead' AND homestead.id_supplier = supplier.id");
+
+	return $app['twig']->render('home.twig', array('sideBar' => 0,
+													'house' => $house,
+													'images' => $images,
+													'services' => $services,
+													'supServices' => $supplierServices,
+													'foods' => $foods,
+													'supplier' => $supplier));
+});
+
+$app->get('/sendrequest', function (Application $app){
+	$conn = $app['db'];
+	
+	return $app['twig']->render('sendrequest.twig',array('sideBar' => 1));
+});
+/*---------------------------------------------------------------*/
 $app->put('/login', function (Request $request) use ($app) {
 	$email = $request->get('email');
 	$password = $request->get('password');

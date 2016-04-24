@@ -5,23 +5,91 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{% endblock %}</title>
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    	
+		<link rel="stylesheet" type="text/css" href="/web/css/style1.css">
+		<link rel="stylesheet" type="text/css" href="/web/css/font-awesome.min.css">
+		
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     </head>
     <body>
-        {% block content %}
-        {% endblock %}
-        <form method="POST" action="/login">
-            <input type="hidden" name="_method" value="PUT"/>
-            <input name="email" type="email">
-            <input name="password" type="password">
-            <button type="submit">Войти</button>
-        </form>
-        <a href="/registration">Регистрация</a>
+        <div id="container" class="clearfix">
+		<header>
+		    <div class="search">
+				<input type="text" class="query" placeholder="Search...">
+				<button>Go!</button>
+		    </div>
+			<nav class="menu">
+			    <a href="/">Главная</a>
+			    <a href="/homes">Усадьбы</a>
+			    <a href="#">Места отдыха</a>
+			    <a href="#">Досуг</a>
+			    <a href="#">Отзывы</a>
+			</nav>
+		</header>
+		{% if sideBar != 0%}
+			<div class="lsidebar">
+				<div class="panel">
+					<div class="header">
+						Случайная информация
+					</div>
+					<p>gdjkh kjhjkhkj hjkhkjh hkjhkjhkj hkjhkjhkjh</p>
+				</div>
+				<div class="panel">
+					<div class="header">
+						Случайная фотография
+					</div>
+					<div class="wrapper">
+						<div class="cell">
+							<img src="1.jpg" alt="">
+						</div>
+					</div>
+				</div>
+			</div>
+		{% endif %}
+
+		{% block content %}{% endblock %}
+
+		{% if sideBar != 0%}
+			<div class="rsidebar">
+				<div class="panel">
+					<div class="header2">
+						Вход поставщика
+					</div>
+					<form method="POST" action="/login">
+						<input type="hidden" id="_method" name="_method" value="PUT" />
+						<div class="login">
+							<div class="login-img"><i class="fa fa-envelope"></i></div>
+							<input type="text" name="email" placeholder="john@gmail.com">
+						</div>
+						<div class="password">
+							<div class="password-img"><i class="fa fa-asterisk"></i></div>
+							<input type="password" name="password" placeholder="*******">
+						</div>
+						<div class="remember">
+							<input type="checkbox" id="checkbox">
+							<label for="checkbox">Запомни меня</label>
+						</div>
+						<input type="submit" value="Войти">
+					</form>
+					<a href="/registration" class="registration">Зарегистрироваться</a>
+				</div>
+				<div class="panel">
+					<div class="header2">
+						Проверить статус заявки
+					</div>
+					<form>
+						<input type="text" class="check" placeholder="Номер заявки">
+						<input type="submit" value="Проверить">
+					</form>
+				</div>
+			</div>
+		{% endif %}
+	</div>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
+		<script src="/web/js/price.js"></script>
     </body>
 </html>
