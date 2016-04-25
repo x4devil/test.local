@@ -227,6 +227,7 @@ $app->get('/homestead', function (Application $app) {
 	$templateData['homestead'] = $app['homestead_repo']->findBySupplier($app['session']->get('supplier'));
 	$templateData['regions'] = $app['region_repo']->findAll();
 	$templateData['tourismTypes'] = $app['tourism_type_repo']->findByHomestead($app['session']->get('homestead')); 
+	$templateData['supplier'] = $app['supplier_repo']->findById($app['session']->get('supplier')); 
 
 
  	return $app['twig']->render('homestead.twig', $templateData);

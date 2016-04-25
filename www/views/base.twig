@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{% endblock %}</title>
     	
+		<link rel="stylesheet" type="text/css" href="/web/css/style.css">
 		<link rel="stylesheet" type="text/css" href="/web/css/style1.css">
 		<link rel="stylesheet" type="text/css" href="/web/css/font-awesome.min.css">
 		
@@ -82,8 +83,17 @@
 					</div>
 					<form>
 						<input type="text" class="check" placeholder="Номер заявки">
-						<input type="submit" value="Проверить">
+						<input type="submit" value="Проверить" class="checkrequest">
 					</form>
+					
+					<!-- -------- -->
+					<div class="modal_bg"></div>
+					<div class="modal_window">
+						<div class="panel">
+							<div class="header">Ваша заявка</div>
+						</div>
+					</div>
+					
 				</div>
 			</div>
 		{% endif %}
@@ -91,5 +101,6 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
 		<script src="/web/js/price.js"></script>
+		<script src="/web/js/modal.js"></script>
     </body>
 </html>

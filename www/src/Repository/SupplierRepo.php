@@ -46,4 +46,16 @@ class SupplierRepo {
 		}
 		return $this->createObject($data);
 	}
+	
+	public function findById($id) {
+		$data = $this->conn->fetchAssoc(
+			'select s.* 
+				from supplier s 
+				where s.id = ?', 
+			array($id));
+		if ($data['id'] == NULL) {
+			return NULL;
+		}
+		return $this->createObject($data);
+	}
 }

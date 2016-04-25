@@ -315,7 +315,7 @@ textarea.in {
     margin-left: 10px;
     margin-bottom: 5px;
 }
-.input-panel {
+.input-pan {
 	width: 100%;
 	margin-top: 22px;
 	display: block;
@@ -326,17 +326,17 @@ textarea.in {
 	background: linear-gradient(to bottom, #E7E7E7, #FFF);
 }
 
-.input-panel .in {
+.input-pan .in {
 	float: right;
 }
-.input-panel select {
+.input-pan select {
 	float: right;
 	width: 223px;
 }
-.input-panel input[type="checkbox"] {
+.input-pan input[type="checkbox"] {
     display: none;
 }
-.input-panel label {
+.input-pan label {
     border-radius: 7px;
     background: #FFF;
     border: 1px solid #DDD;
@@ -349,7 +349,7 @@ textarea.in {
     height: 16px;
     display: inline-block;
 }
-.input-panel label::before {
+.input-pan label::before {
 
     display: inline-block;
     content: "";
@@ -361,7 +361,7 @@ textarea.in {
     background: #F0F0F0;
     margin: -1px 3px -6px -2px;
 }
-.input-panel input[type=checkbox]:checked + label:before{
+.input-pan input[type=checkbox]:checked + label:before{
 	background: linear-gradient(to bottom, #F1ECF3, #9C7AAA);
 }
 .title {
@@ -385,7 +385,7 @@ textarea.in {
 	font-weight: 500;
 	width: 200px;
 }
-.wrapper {
+.wrapp {
 	width: 1000px;
 	margin: 0 auto;
 }
@@ -405,7 +405,7 @@ textarea.in {
 	margin-left: 40px;
 	height: 296px;
 }
-.right-panel .panel>.input-panel {
+.right-panel .panel>.input-pan {
 	width: 100%;
 	margin-top: 5px;
 	margin-left: 10px;

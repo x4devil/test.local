@@ -5,43 +5,53 @@
 {% endblock %}
 
 {% block content %}
-<form method="POST">
-	<input type="hidden" name="_method" value="PUT"/>
-	<input type="hidden" name="type" value="1"/>
+<div id="container" class="clearfix">
+	<div class="content center">
+		<form method="POST">
+			<input type="hidden" name="_method" value="PUT"/>
+			<input type="hidden" name="type" value="1"/>
+			<div class="panel">
+				<div class="header">
+					Добавление субподрядчика
+				</div>
+				<input class="data input" placeholder="ФИО" type="text" name="fio" required>
+				<input class="data input" placeholder="Сервис" type="text" name="service" required  maxlength="200">
+				<input class="data input" placeholder="Цена" type="text" name="price" required pattern="\d+" title="Целое число">
+			
+			<button type="subbmit" class="btn save">Добавить</button>
+			</div>
+		</form>
 
-	ФИО<input type="text" name="fio" required>
-	СЕРВИС<input type="text" name="service" required  maxlength="200">
-	ЦЕНА<input type="text" name="price" required pattern="\d+" title="Целое число">
+		<form method="POST">
+			<input type="hidden" name="_method" value="PUT"/>
+			<input type="hidden" name="type" value="2"/>
+			<div class="panel">
+				<div class="header">
+					Субподрядчики
+				</div>
+					<table class="serv">
+						<th>
+							ФИО
+						</th>
+						<th>
+							Сервис
+						</th>
+						<th>
+							Цена
+						</th>
+						<th>
+							Удаление
+						</th>
 
-	<button type="subbmit" class="btn">Добавить</button>
-</form>
-
-<form method="POST">
-	<input type="hidden" name="_method" value="PUT"/>
-	<input type="hidden" name="type" value="2"/>
-	<table>
-		<th>
-			ФИО
-		</th>
-		<th>
-			Сервис
-		</th>
-		<th>
-			Цена
-		</th>
-		<th>
-			Удаление
-		</th>
-
-		{% for sub in subs %}
-			<tr>
-				<td>{{sub.getFio()}}</td>
-				<td><input type="text" name="service-{{sub.getId()}}" value="{{sub.getService()}}" required maxlength="200"></td>
-				<td><input type="text" name="price-{{sub.getId()}}" value="{{sub.getPrice()}}" required pattern="\d+" title="Целое число"></td>
-				<td><a href="/delete/sub/{{sub.getId()}}"><button class="btn" type="subbmit">Удалить</button></a></td>
-			</tr>
-		{% endfor %}
-	</table>
-	<button type="subbmit" class="btn">Сохранить</button>
-</form>
+						{% for sub in subs %}
+							<tr>
+								<td>{{sub.getFio()}}</td>
+								<td><input type="text" name="service-{{sub.getId()}}" value="{{sub.getService()}}" required maxlength="200"></td>
+								<td><input type="text" name="price-{{sub.getId()}}" value="{{sub.getPrice()}}" required pattern="\d+" title="Целое число"></td>
+								<td class="delete"><a href="/delete/sub/{{sub.getId()}}"><button class="btn" type="subbmit">Удалить</button></a></td>
+							</tr>
+						{% endfor %}
+					</table>
+					<button type="subbmit" class="btn save">Сохранить</button>
+		</form>
 {% endblock %}

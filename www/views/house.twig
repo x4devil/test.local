@@ -15,24 +15,24 @@
 			    });    
 			});​
 		</script>
-		<div class="wrapper">
+		<div class="wrapp">
 			<div class="title">Добавление домика</div>
 			<form method="POST" enctype="multipart/form-data">
 				<div class="clearfix">
 					<div class="left-panel">
 						<div class="subtitle">1. Заполните параметры домика</div>
 						<input type="hidden" name="_method" value="PUT"/>
-						<div class="input-panel">
+						<div class="input-pan">
 							<span>Название</span>
 							<input id="name" class="in" type="text" name="name" required maxlength="50" value="{{house.getName()}}" placeholder="Введите название">
 						</div>
-						<div class="input-panel">
+						<div class="input-pan">
 							<span>Базовая стоимость</span><input class="in" type="text" name="price" required pattern="\d+" value="{{house.getPrice()}}" maxlength="10" placeholder="Введите стоимость" title="Целое число">
 						</div>
-						<div class="input-panel">
+						<div class="input-pan">
 							<span>Количество мест</span><input class="in" type="text" name="place" required pattern="\d+" maxlength="2" value="{{house.getPlace()}}" placeholder="Введите количество мест" title="Целое число">
 						</div>
-						<div class="input-panel">
+						<div class="input-pan">
 							<span>Тип проживания</span>
 							<select class="select" name="id_live_type">
 								{% for liveType in liveTypes %}
@@ -54,28 +54,28 @@
 					<div class="right-panel">
 						<div class="panel" >
 							<div class="header">Сезон приема</div>
-							<div class="input-panel">
+							<div class="input-pan">
 								{% if house.getSpring() == 1 %}
 									<input id="spring" type="checkbox" name="spring" checked><label for="spring">Весна</label>
 								{% else %}
 									<input  id="spring" type="checkbox" name="spring"><label for="spring">Весна</label>
 								{% endif %}
 							</div>
-							<div class="input-panel">
+							<div class="input-pan">
 								{% if house.getSummer() == 1 %}
 									<input id="summer" type="checkbox" name="summer" checked><label for="summer">Лето</label> 
 								{% else %}
 									<input id="summer" type="checkbox" name="summer"><label for="summer">Лето</label> 
 								{% endif %}
 							</div>
-							<div class="input-panel">
+							<div class="input-pan">
 								{% if house.getAutumn() == 1 %}
 									<input id="autumn" type="checkbox" name="autumn" checked><label for="autumn">Осень</label> 
 								{% else %}
 									<input id="autumn" type="checkbox" name="autumn"><label for="autumn">Осень</label> 
 								{% endif %}
 							</div>
-							<div class="input-panel">
+							<div class="input-pan">
 								{% if house.getWinter() == 1 %}
 									<input id="winter" type="checkbox" name="winter" checked><label for="winter">Зима</label> 
 								{% else %}
@@ -95,7 +95,7 @@
 						{% endfor %}
 					{% endif %}
 				</div>
-				<div class="button">
+				<div class="button1" >
 					{% if house == NULLL %}
 						<input type="submit" value="Создать домик">
 					{% else %}
@@ -106,7 +106,7 @@
 
 			{% if house != NULLL %}
 			<form method="post">
-				<div class="button">
+				<div class="button1">
 					<input type="submit" onclick="return confirm('Вы уверены?')" value="Удалить">
 				</div>
 		    	<input type="hidden" id="_method" name="_method" value="DELETE" />
@@ -114,7 +114,7 @@
 			{% endif %}
 			
 			<a href="/homestead">
-				<div class="button">
+				<div class="button1">
 					<input type="submit" value="Назад">
 				</div>
 			</a>

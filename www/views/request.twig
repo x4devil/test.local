@@ -5,43 +5,61 @@
 {% endblock %}
 
 {% block content %}
-	<form method="POST">
-		<input type="hidden" name="_method" value="PUT"/>
-		<table>
-			{% for request in requests %}
-				<tr>
-					<td>{{request.getId()}}</td>
-					<td>{{request.getHouse()}}</td>
-					<td>{{request.getFio()}}</td>
-					<td>{{request.getPhone()}}</td>
-					<td>{{request.getEmail()}}</td>
-					<td>{{request.getDate()}}</td>
-					<td><input type="text" name="req-price-{{request.getId()}}" maxlength="10" required pattern="\d+" value="{{request.getPrice()}}"></td>
-					<td>{{request.getDesc()}}</td>
-					<td>{{request.getServices()}}</td>
-					<td>
-						<select name="req-state-{{request.getId()}}">
-							{% if request.getState() == 0 %}
-								<option value="0" selected>Новая</option>
-							{% else %}
-								<option value="0">Новая</option>
-							{% endif %}
-							{% if request.getState() == 1 %}
-								<option value="1" selected>Одобрена</option>
-							{% else %}
-								<option value="1">Одобрена</option>
-							{% endif %}
-							{% if request.getState() == 2 %}
-								<option value="2" selected>Отклонена</option>
-							{% else %}
-								<option value="2">Отклонена</option>
-							{% endif %}
-						<select>
-					</td>
-				<tr>
-			{% endfor %}
-		</table>
-		<button type="submit">Сохранить</button>
-	</form>
-	<a href="/homestead"><button>Назад</button></a>
+	<div id="container" class="clearfix">
+		<div class="panel">
+			<div class="header">
+				Заявка
+			</div>
+		
+			<form method="POST">
+				<input type="hidden" name="_method" value="PUT"/>
+				<table>
+					<tr class="h">
+						<td class="h">№</td>
+						<td class="h">Название</td>
+						<td class="h">ФИО</td>
+						<td class="h">Телефон</td>
+						<td class="h">Email</td>
+						<td class="h">Дата</td>
+						<td class="h">Стоимость</td>
+						<td class="h">Пожелание</td>
+						<td class="h">Услуги</td>
+						<td class="h">Статус</td>
+					</tr>
+					{% for request in requests %}
+						<tr>
+							<td>{{request.getId()}}</td>
+							<td>{{request.getHouse()}}</td>
+							<td>{{request.getFio()}}</td>
+							<td>{{request.getPhone()}}</td>
+							<td>{{request.getEmail()}}</td>
+							<td>{{request.getDate()}}</td>
+							<td><input type="text" name="req-price-{{request.getId()}}" maxlength="10" required pattern="\d+" value="{{request.getPrice()}}"></td>
+							<td>{{request.getDesc()}}</td>
+							<td>{{request.getServices()}}</td>
+							<td>
+								<select name="req-state-{{request.getId()}}">
+									{% if request.getState() == 0 %}
+										<option value="0" selected>Новая</option>
+									{% else %}
+										<option value="0">Новая</option>
+									{% endif %}
+									{% if request.getState() == 1 %}
+										<option value="1" selected>Одобрена</option>
+									{% else %}
+										<option value="1">Одобрена</option>
+									{% endif %}
+									{% if request.getState() == 2 %}
+										<option value="2" selected>Отклонена</option>
+									{% else %}
+										<option value="2">Отклонена</option>
+									{% endif %}
+								<select>
+							</td>
+						</tr>
+					{% endfor %}
+				</table>
+				<button type="submit" class="save">Сохранить</button>
+			</form>
+			<a href="/homestead" class="back">Назад</a>
 {% endblock %}
